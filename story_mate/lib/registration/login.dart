@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'homepage.dart'; // Import the HomePage widget
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -8,9 +10,32 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance; // Firebase Auth instance
+
+  void _loginUser() async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      // User logged in successfully, navigate to HomePage
+      if (userCredential.user != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      // Handle different Firebase auth errors here
+      print('Firebase Auth Error: ${e.message}');
+    } catch (e) {
+      // Handle other errors
+      print('Error: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,18 +60,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                // Perform registration logic here
-                String username = _usernameController.text;
-                String email = _emailController.text;
-                String password = _passwordController.text;
-
-                // Add your registration logic here, e.g., call an API
-                // For simplicity, just print the registration details
-                print('Username: $username');
-                print('Email: $email');
-                print('Password: $password');
-              },
+              onPressed: _loginUser,
               child: const Text('Login'),
             ),
           ],
