@@ -4,7 +4,15 @@ import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+      apiKey: "AIzaSyBcpIdHXRuS2eLo4zmw3i_rhLVpxil78Zk",
+      appId: "1:385510487289:android:c18d9d692e96c6c5805e28",
+      messagingSenderId: "385510487289",
+      projectId: "st-mate-3dcc6",
+    ),
+  );
+
   runApp(const MyApp());
 }
 
@@ -36,7 +44,6 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-
     );
   }
 }
