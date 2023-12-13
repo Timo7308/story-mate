@@ -14,10 +14,10 @@ class WelcomePage extends StatelessWidget {
       body: Column(
         children: <Widget>[
           // Text "Story Mate" at the top
-          Align(
+          const Align(
             alignment: Alignment.topCenter,
             child: Padding(
-              padding: const EdgeInsets.only(top: 20),
+              padding: EdgeInsets.only(top: 0),
               child: Text(
                 'STORYMATE',
                 style: TextStyle(
@@ -46,13 +46,13 @@ class WelcomePage extends StatelessWidget {
                   'assets/WelcomeImage.png',
                   //fit: BoxFit.contain,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Text(
                   'Make new friends,\nwrite new stories',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.displayLarge,
                 ),
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
                 Text(
                   'Empowered by AI',
                   textAlign: TextAlign.center,
@@ -71,8 +71,8 @@ class WelcomePage extends StatelessWidget {
                 // Button to navigate to the Login page
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 30,
-                    vertical: 10,
+                    horizontal: 20,
+                    vertical: 5,
                   ),
                   child: ElevatedButton(
                     onPressed: () {
@@ -96,8 +96,8 @@ class WelcomePage extends StatelessWidget {
                 // Button to navigate to the Registration page
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 30,
-                    vertical: 10,
+                    horizontal: 20,
+                    vertical: 5,
                   ),
                   child: ElevatedButton(
                     onPressed: () {
@@ -111,7 +111,7 @@ class WelcomePage extends StatelessWidget {
                     child: const Text('Register'),
                   ),
                 ),
-                const SizedBox(height: 30), // Space at the bottom
+                const SizedBox(height: 10), // Space at the bottom
               ],
             ),
           ),
