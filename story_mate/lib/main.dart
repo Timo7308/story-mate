@@ -76,6 +76,32 @@ class MyApp extends StatelessWidget {
             fontSize: 20,
           ),
         ),
+
+        inputDecorationTheme: InputDecorationTheme(
+          // Customize the appearance of text input fields
+          filled: true,
+          fillColor: const Color.fromARGB(
+              255, 216, 216, 216), // Set the background color
+          border: OutlineInputBorder(
+            borderRadius:
+                BorderRadius.circular(12.0), // Adjust the corner radius
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.0),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.0),
+            borderSide: BorderSide.none,
+          ),
+          labelStyle: TextStyle(
+            color: primaryColor,
+            fontFamily: 'Lato',
+          ),
+          floatingLabelBehavior:
+              FloatingLabelBehavior.never, // Hide the hint text on typing
+        ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(
