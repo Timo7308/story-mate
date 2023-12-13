@@ -83,12 +83,13 @@ class WelcomePage extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(
-                          255, 199, 199, 199), // Set the button color to grey
+                      backgroundColor: Color.fromARGB(
+                          255, 232, 232, 232), // Set the button color to grey
                     ),
-                    child: const Text(
-                      'Login',
-                    ),
+                    child: const Text('Login',
+                        style: TextStyle(
+                          color: Colors.black,
+                        )),
                   ),
                 ),
                 const SizedBox(height: 5), // Space between buttons
@@ -108,7 +109,7 @@ class WelcomePage extends StatelessWidget {
                         ),
                       );
                     },
-                    child: Text('Create Account'),
+                    child: Text('Sign Up'),
                   ),
                 ),
                 const SizedBox(height: 10), // Space at the bottom
