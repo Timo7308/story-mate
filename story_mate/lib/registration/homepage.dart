@@ -11,8 +11,8 @@ class HomePage extends StatelessWidget {
         // Remove the automatically implied leading back button
         automaticallyImplyLeading: false,
       ),
-      body: Center(
-        child: const Text('Welcome! You are logged in.'),
+      body: const Center(
+        child: Text('Welcome! You are logged in.'),
       ),
     );
   }
