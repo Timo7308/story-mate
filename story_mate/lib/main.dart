@@ -18,9 +18,10 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key});
 
-//function that creates a swatch based on our primary color. Derived from: https://medium.com/@nickysong/creating-a-custom-color-swatch-in-flutter-554bcdcb27f3
+  // Function that creates a swatch based on our primary color.
+  // Derived from: https://medium.com/@nickysong/creating-a-custom-color-swatch-in-flutter-554bcdcb27f3
   MaterialColor createMaterialColor(Color color) {
     List strengths = <double>[.05];
     Map<int, Color> swatch = {};
@@ -38,7 +39,6 @@ class MyApp extends StatelessWidget {
         1,
       );
     }
-    ;
 
     return MaterialColor(color.value, swatch);
   }
@@ -55,8 +55,51 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSwatch(
           primarySwatch: createMaterialColor(primaryColor),
         ),
+        textTheme: const TextTheme(
+          displayLarge: TextStyle(
+            fontFamily: 'Literata',
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+          ),
+          displayMedium: TextStyle(
+            fontFamily: 'Literata',
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+          bodyLarge: TextStyle(
+            fontFamily: 'Lato',
+            fontSize: 16,
+          ),
+          titleLarge: TextStyle(
+            fontFamily: 'Literata',
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 15,
+            ),
+            minimumSize: const Size(
+              double.infinity,
+              60,
+            ),
+            primary: Color(0xFF0A2342), // Set the button background color
+            onPrimary: Colors.white,
+            textStyle: const TextStyle(
+              fontFamily: 'Lato',
+              fontSize: 20,
+              color: Colors.white,
+
+              //  ),
+            ),
+          ),
+        ),
+
         useMaterial3: true,
-        scaffoldBackgroundColor: Colors.white, //white background
+        scaffoldBackgroundColor: Colors.white, // white background
       ),
     );
   }

@@ -36,13 +36,15 @@ class _LoginPageState extends State<LoginPage> {
       print('Error: $e');
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login to your account'),
       ),
-      body: LayoutBuilder( // Use LayoutBuilder for more flexible layout options
+      body: LayoutBuilder(
+        // Use LayoutBuilder for more flexible layout options
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
@@ -52,7 +54,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
               child: IntrinsicHeight(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center, // Center the content vertically
+                  mainAxisAlignment:
+                      MainAxisAlignment.center, // Center the content vertically
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     // Email input field
@@ -75,19 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 20),
                     // Login button
-                    ElevatedButton(
-                    onPressed: _loginUser,
-                      style: ElevatedButton.styleFrom(
-                     backgroundColor: Colors.indigo[900], // Button color
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      ),
-                       child: Text('Login',
-                       style: TextStyle(
-                        fontSize: 20, // Bigger text size
-                        color: Colors.white, // White text color
-                       ),
-                       ),
-                    ),
+                    ElevatedButton(onPressed: _loginUser, child: Text('Login')),
                   ],
                 ),
               ),

@@ -19,7 +19,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   void _registerUser() async {
     try {
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
@@ -35,9 +36,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => ProfilePage(
-
-            ),
+            builder: (context) => ProfilePage(),
           ),
         );
       } else {
@@ -58,9 +57,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
       appBar: AppBar(
         title: const Text('Signup for Storymate'),
       ),
-      body: SingleChildScrollView( // Allows for scrolling when keyboard is visible
+      body: SingleChildScrollView(
+        // Allows for scrolling when keyboard is visible
         padding: const EdgeInsets.all(16.0),
-        child: Center( // Center the Column in the SingleChildScrollView
+        child: Center(
+          // Center the Column in the SingleChildScrollView
           child: Column(
             mainAxisSize: MainAxisSize.min,
             // Minimize the space the column takes
@@ -68,10 +69,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
             // Center the content vertically
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: MediaQuery
-                  .of(context)
-                  .size
-                  .height * 0.2), // Increase space at the top
+              SizedBox(
+                  height: MediaQuery.of(context).size.height *
+                      0.2), // Increase space at the top
               // Username input field
               TextField(
                 controller: _usernameController,
@@ -104,16 +104,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               // Register button
               ElevatedButton(
                 onPressed: _registerUser,
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.indigo[900], // Button color
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                ),
-                child: const Text(
-                  'Register',
-                  style: TextStyle(
-                    color: Colors.white, // White text color
-                  ),
-                ),
+                child: const Text('Register'),
               ),
               const SizedBox(height: 10),
               // The button for navigating to login page has been removed

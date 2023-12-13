@@ -24,7 +24,7 @@ class WelcomePage extends StatelessWidget {
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Literata',
-                  color: Colors.black,
+                  // color: Colors.black,
                   shadows: [
                     Shadow(
                       color: Color.fromARGB(255, 228, 228, 228),
@@ -44,29 +44,19 @@ class WelcomePage extends StatelessWidget {
               children: [
                 Image.asset(
                   'assets/WelcomeImage.png',
-                  fit: BoxFit.contain,
+                  //fit: BoxFit.contain,
                 ),
                 SizedBox(height: 20),
                 Text(
                   'Make new friends,\nwrite new stories',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.normal,
-                    fontFamily: 'Literata',
-                    color: Colors.black,
-                  ),
+                  style: Theme.of(context).textTheme.displayLarge,
                 ),
                 SizedBox(height: 40),
                 Text(
                   'Empowered by AI',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.normal,
-                    fontFamily: 'Lato',
-                    color: Colors.black,
-                  ),
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ],
             ),
@@ -93,23 +83,11 @@ class WelcomePage extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.grey,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 15,
-                      ),
-                      minimumSize: const Size(
-                        double.infinity,
-                        70,
-                      ),
+                      backgroundColor: const Color.fromARGB(
+                          255, 199, 199, 199), // Set the button color to grey
                     ),
                     child: const Text(
                       'Login',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontFamily: 'Lato',
-                      ),
                     ),
                   ),
                 ),
@@ -130,25 +108,7 @@ class WelcomePage extends StatelessWidget {
                         ),
                       );
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF0A2342),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 15,
-                      ),
-                      minimumSize: const Size(
-                        double.infinity,
-                        70,
-                      ),
-                    ),
-                    child: const Text(
-                      'Register',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontFamily: 'Lato',
-                      ),
-                    ),
+                    child: const Text('Register'),
                   ),
                 ),
                 const SizedBox(height: 30), // Space at the bottom
