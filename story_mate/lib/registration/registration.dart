@@ -57,60 +57,61 @@ class _RegistrationPageState extends State<RegistrationPage> {
       appBar: AppBar(
         title: const Text('Signup for Storymate'),
       ),
-      body: SingleChildScrollView(
-        // Allows for scrolling when keyboard is visible
-        padding: const EdgeInsets.all(16.0),
-        child: Center(
-          // Center the Column in the SingleChildScrollView
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            // Minimize the space the column takes
-            mainAxisAlignment: MainAxisAlignment.center,
-            // Center the content vertically
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(
-                  height: MediaQuery.of(context).size.height *
-                      0.2), // Increase space at the top
-              // Username input field
-              TextField(
-                controller: _usernameController,
-                decoration: const InputDecoration(
-                  labelText: 'Username',
-                  border: OutlineInputBorder(),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Username input field
+                      TextField(
+                        controller: _usernameController,
+                        decoration: const InputDecoration(
+                          labelText: 'Username',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      // Email input field
+                      TextField(
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: const InputDecoration(
+                          labelText: 'Email',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      // Password input field
+                      TextField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          labelText: 'Password',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              // Email input field
-              TextField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 20),
-              // Password input field
-              TextField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 20),
-              // Register button
-              ElevatedButton(
-                onPressed: _registerUser,
-                child: const Text('Register'),
-              ),
-              const SizedBox(height: 10),
-              // The button for navigating to login page has been removed
-            ],
+              ],
+            ),
           ),
-        ),
+          // Register button
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ElevatedButton(
+              onPressed: _registerUser,
+              child: const Text('Register'),
+            ),
+          ),
+        ],
       ),
     );
   }

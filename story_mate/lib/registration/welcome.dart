@@ -108,7 +108,7 @@ class WelcomePage extends StatelessWidget {
                         ),
                       );
                     },
-                    child: const Text('Register'),
+                    child: Text('Create Account'),
                   ),
                 ),
                 const SizedBox(height: 10), // Space at the bottom

@@ -43,48 +43,50 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         title: const Text('Login to your account'),
       ),
-      body: LayoutBuilder(
-        // Use LayoutBuilder for more flexible layout options
-        builder: (BuildContext context, BoxConstraints viewportConstraints) {
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: viewportConstraints.maxHeight,
-              ),
-              child: IntrinsicHeight(
-                child: Column(
-                  mainAxisAlignment:
-                      MainAxisAlignment.center, // Center the content vertically
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Email input field
-                    TextFormField(
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                        border: OutlineInputBorder(),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: ListView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Email input field
+                      TextFormField(
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                          labelText: 'Email',
+                          border: OutlineInputBorder(),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    // Password input field
-                    TextFormField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        border: OutlineInputBorder(),
+                      const SizedBox(height: 20),
+                      // Password input field
+                      TextFormField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          border: OutlineInputBorder(),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    // Login button
-                    ElevatedButton(onPressed: _loginUser, child: Text('Login')),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          );
-        },
+          ),
+          // Login button
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ElevatedButton(
+              onPressed: _loginUser,
+              child: Text('Login'),
+            ),
+          ),
+        ],
       ),
     );
   }
