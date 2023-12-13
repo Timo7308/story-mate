@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'login.dart'; // Ensure this is the correct path to your login page
+import 'profile.dart'; // Ensure this is the correct path to your login page
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -19,36 +19,36 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   void _registerUser() async {
     try {
-      UserCredential userCredential = await _auth
-          .createUserWithEmailAndPassword(
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
 
-      // Get the user's ID
       String userId = userCredential.user?.uid ?? '';
-
       if (userId.isNotEmpty) {
         await FirebaseFirestore.instance.collection('users').doc(userId).set({
           'username': _usernameController.text,
           'email': _emailController.text,
-        }).then((_) {
-          print('User data stored in Firestore successfully');
-        }).catchError((error) {
-          print('Error storing user data in Firestore: $error');
         });
 
-        // User registered successfully
-        print('User registered: ${userCredential.user?.email}');
+        // Navigate to ProfilePage
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfilePage(
+
+            ),
+          ),
+        );
       } else {
         print('User ID is empty, Firestore operation aborted.');
       }
     } on FirebaseAuthException catch (e) {
-      // Handle different Firebase auth errors here
       print('Firebase Auth Error: ${e.message}');
+      // Optionally, show an error message to the user
     } catch (e) {
-      // Handle other errors
       print('Error: $e');
+      // Optionally, show an error message to the user
     }
   }
 
