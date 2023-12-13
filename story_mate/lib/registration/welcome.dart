@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'login.dart'; // Ensure this is the correct path to your login page
-import 'registration.dart'; // Ensure this is the correct path to your registration page
+import 'login.dart';
+import 'registration.dart';
 
 class WelcomePage extends StatelessWidget {
-  const WelcomePage({super.key});
+  const WelcomePage({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,68 +13,141 @@ class WelcomePage extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          // Text "Story Mate" in the upper half
-          const Expanded(
-            flex: 2, // Adjust the flex to control space distribution
-            child: Center(
+          // Text "Story Mate" at the top
+          Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 20),
               child: Text(
-                'Storymate',
+                'STORYMATE',
                 style: TextStyle(
-                  fontSize: 40, // Adjust font size
-                  fontWeight: FontWeight.bold, // Makes the text bold
-                  color: Colors.black, // Text color
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Literata',
+                  color: Colors.black,
+                  shadows: [
+                    Shadow(
+                      color: Color.fromARGB(255, 228, 228, 228),
+                      offset: Offset(10, 10),
+                      blurRadius: 0.0,
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
 
-          // Buttons in the lower half
+          // Expanded section for the Welcome Image and Text
           Expanded(
-            flex: 1, // Adjust the flex to control space distribution
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/WelcomeImage.png',
+                  fit: BoxFit.contain,
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'Make new friends,\nwrite new stories',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.normal,
+                    fontFamily: 'Literata',
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: 40),
+                Text(
+                  'Empowered by AI',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.normal,
+                    fontFamily: 'Lato',
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Buttons at the bottom
+          Align(
+            alignment: Alignment.bottomCenter,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 // Button to navigate to the Login page
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 10,
+                  ),
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const LoginPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const LoginPage()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.indigo[900], // Button color
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      minimumSize: const Size(double.infinity, 50), // Makes the button wider and of fixed height
+                      primary: Colors.grey,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ),
+                      minimumSize: const Size(
+                        double.infinity,
+                        70,
+                      ),
                     ),
                     child: const Text(
                       'Login',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontFamily: 'Lato',
+                      ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 20), // Space between buttons
+                const SizedBox(height: 5), // Space between buttons
 
                 // Button to navigate to the Registration page
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 10,
+                  ),
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const RegistrationPage()),
+                        MaterialPageRoute(
+                          builder: (context) => const RegistrationPage(),
+                        ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.indigo[900], // Button color
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      minimumSize: const Size(double.infinity, 50), // Makes the button wider and of fixed height
+                      backgroundColor: Color(0xFF0A2342),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ),
+                      minimumSize: const Size(
+                        double.infinity,
+                        70,
+                      ),
                     ),
                     child: const Text(
                       'Register',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontFamily: 'Lato',
+                      ),
                     ),
                   ),
                 ),
