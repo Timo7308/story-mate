@@ -1,6 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:story_mate/stories/start.dart';
 
-class SetupPage extends StatelessWidget {
+class SetupPage extends StatefulWidget {
+  @override
+  _SetupPageState createState() => _SetupPageState();
+}
+
+class _SetupPageState extends State<SetupPage> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => StartPage()),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -8,7 +25,7 @@ class SetupPage extends StatelessWidget {
         title: const Text('Setup your profile'),
       ),
       body: const Center(
-        child: Text('Welcome to the next page!'),
+        child: Text('Setup finished!'),
       ),
     );
   }
