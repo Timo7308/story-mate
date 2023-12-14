@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:story_mate/registration/registration.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:story_mate/registration/welcome.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: FirebaseOptions(
+    options: const FirebaseOptions(
       apiKey: "AIzaSyBcpIdHXRuS2eLo4zmw3i_rhLVpxil78Zk",
       appId: "1:385510487289:android:c18d9d692e96c6c5805e28",
       messagingSenderId: "385510487289",
@@ -45,7 +43,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final primaryColor = Color(0xFF0A2342);
+    const primaryColor = Color(0xFF0A2342);
     return MaterialApp(
       home: const WelcomePage(),
       debugShowCheckedModeBanner: false,
@@ -104,7 +102,7 @@ class MyApp extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(
+            foregroundColor: Colors.white, backgroundColor: const Color(0xFF0A2342), padding: const EdgeInsets.symmetric(
               horizontal: 20,
               vertical: 15,
             ),
@@ -112,8 +110,6 @@ class MyApp extends StatelessWidget {
               double.infinity,
               60,
             ),
-            primary: Color(0xFF0A2342), // Set the button background color
-            onPrimary: Colors.white,
             textStyle: const TextStyle(
               fontFamily: 'Lato',
               fontSize: 20,

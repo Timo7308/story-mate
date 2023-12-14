@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'profile.dart'; // Ensure this is the correct path to your login page
+import '../profile/profile.dart'; // Ensure this is the correct path to your login page
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});

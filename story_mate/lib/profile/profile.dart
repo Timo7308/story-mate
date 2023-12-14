@@ -4,10 +4,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'setup.dart';
 
 enum Gender { male, female, other }
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -21,21 +24,21 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Setup your profile'),
       ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Center(
               child: _profileImage(),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Center(
               child: ElevatedButton(
                 onPressed: () => _pickAndUploadImage(),
-                child: Text('Upload Profile Picture'),
+                child: const Text('Upload Profile Picture'),
               ),
             ),
             ListTile(
@@ -77,7 +80,16 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
               ),
             ),
-            // ... Additional widgets or content can be added here ...
+            const SizedBox(height: 20),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SetupPage()),
+            );
+          },
+          child: Text('Finish Setup'),
+        ),
           ],
         ),
       ),
@@ -93,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
         fit: BoxFit.cover,
       );
     } else {
-      return Icon(Icons.account_circle, size: 150);
+      return const Icon(Icons.account_circle, size: 150);
     }
   }
 
