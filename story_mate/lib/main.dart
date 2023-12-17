@@ -46,7 +46,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     const primaryColor = Color(0xFF0A2342);
     return MaterialApp(
+      //change initial page for bootup here
       home: const WelcomePage(),
+
       //home: MyHomePage(), // make the openAI page as the default page after login
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
@@ -104,7 +106,9 @@ class MyApp extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.white, backgroundColor: const Color(0xFF0A2342), padding: const EdgeInsets.symmetric(
+            foregroundColor: Colors.white,
+            backgroundColor: const Color(0xFF0A2342),
+            padding: const EdgeInsets.symmetric(
               horizontal: 20,
               vertical: 15,
             ),
