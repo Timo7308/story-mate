@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:story_mate/registration/welcome.dart';
+import 'package:story_mate/stories/story_chat.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
     const primaryColor = Color(0xFF0A2342);
     return MaterialApp(
       home: const WelcomePage(),
+      //home: MyHomePage(), // make the openAI page as the default page after login
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(

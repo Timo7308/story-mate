@@ -18,14 +18,41 @@ import 'dart:convert';
 //   }
 // }
 
+// class StoryChatPage extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: Scaffold(
+//         // appBar: AppBar(
+//         //   title: Text('Pirate Story'),
+//         // ),
+//         body: Column(
+//           children: [
+//             // Add the Image widget here
+//             Image.asset(
+//               'assets/pirate_writing.jpeg', 
+//               height: 200, 
+//               width: double.infinity,
+//               fit: BoxFit.cover,
+//             ),
+//             Expanded(
+//               child: MyHomePage(),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
 class StoryChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ChatGPT Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      //title: 'ChatGPT Flutter Demo',
+      // theme: ThemeData(
+      //   primarySwatch: Colors.blue,
+      // ),
       home: MyHomePage(),
     );
   }
@@ -79,32 +106,75 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Pirate Story'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _textInputController,
-              decoration: InputDecoration(
-                labelText: 'Enter your message',
-              ),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _sendMessage,
-              child: Text('Send Message'),
-            ),
-            SizedBox(height: 16),
-            Text('ChatGPT Response: $_response'),
-          ],
+
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Text('Pirate Story'),
+    ),
+    body: Column(
+      children: [
+        // Add the Image widget at the top
+        Image.asset(
+          'assets/pirate_writing.jpeg', // Replace with the actual path to your image file
+          height: 350, // Adjust the height as needed
+          width: double.infinity,
+          fit: BoxFit.cover,
         ),
-      ),
-    );
-  }
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextField(
+                controller: _textInputController,
+                decoration: InputDecoration(
+                  labelText: 'Enter your message here...',
+                ),
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _sendMessage,
+                child: Text('Send'),
+              ),
+              SizedBox(height: 16),
+              Text('Revised Message: $_response'),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+
+
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     appBar: AppBar(
+  //       title: Text('Pirate Story'),
+  //     ),
+  //     body: Padding(
+  //       padding: const EdgeInsets.all(16.0),
+  //       child: Column(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           TextField(
+  //             controller: _textInputController,
+  //             decoration: InputDecoration(
+  //               labelText: 'Enter your message here...',
+  //             ),
+  //           ),
+  //           SizedBox(height: 16),
+  //           ElevatedButton(
+  //             onPressed: _sendMessage,
+  //             child: Text('Send'),
+  //           ),
+  //           SizedBox(height: 16),
+  //           Text('Revised Message: $_response'),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 }
