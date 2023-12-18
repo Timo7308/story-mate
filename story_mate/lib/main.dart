@@ -3,6 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:story_mate/registration/welcome.dart';
 import 'package:story_mate/stories/story_chat.dart';
 
+//FOR DEBUGGING TURN TO TRUE
+bool Debug = true;
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -47,7 +50,8 @@ class MyApp extends StatelessWidget {
     const primaryColor = Color(0xFF0A2342);
     return MaterialApp(
       //change initial page for bootup here
-      home: const WelcomePage(),
+
+      home: Debug ? StoryChatPage() : WelcomePage(),
 
       //home: MyHomePage(), // make the openAI page as the default page after login
       debugShowCheckedModeBanner: false,

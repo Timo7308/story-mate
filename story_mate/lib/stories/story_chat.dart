@@ -30,8 +30,8 @@ import 'dart:convert';
 //           children: [
 //             // Add the Image widget here
 //             Image.asset(
-//               'assets/pirate_writing.jpeg', 
-//               height: 200, 
+//               'assets/pirate_writing.jpeg',
+//               height: 200,
 //               width: double.infinity,
 //               fit: BoxFit.cover,
 //             ),
@@ -48,16 +48,9 @@ import 'dart:convert';
 class StoryChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      //title: 'ChatGPT Flutter Demo',
-      // theme: ThemeData(
-      //   primarySwatch: Colors.blue,
-      // ),
-      home: MyHomePage(),
-    );
+    return MyHomePage();
   }
 }
-
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -71,12 +64,13 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _sendMessage() async {
     final String apiKey = "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";
     final String inputText = _textInputController.text;
-    final String resultText = "Rewrite the following sentence/question just like pirate's converation in stories: " + inputText;
-
+    final String resultText =
+        "Rewrite the following sentence/question just like pirate's converation in stories: " +
+            inputText;
 
     try {
       final response = await http.post(
-        Uri.parse('https://api.openai.com/v1/completions'), 
+        Uri.parse('https://api.openai.com/v1/completions'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $apiKey',
@@ -106,48 +100,45 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: Text('Pirate Story'),
-    ),
-    body: Column(
-      children: [
-        // Add the Image widget at the top
-        Image.asset(
-          'assets/pirate_writing.jpeg', // Replace with the actual path to your image file
-          height: 350, // Adjust the height as needed
-          width: double.infinity,
-          fit: BoxFit.cover,
-        ),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextField(
-                controller: _textInputController,
-                decoration: InputDecoration(
-                  labelText: 'Enter your message here...',
-                ),
-              ),
-              SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _sendMessage,
-                child: Text('Send'),
-              ),
-              SizedBox(height: 16),
-              Text('Revised Message: $_response'),
-            ],
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Pirate Story'),
+      ),
+      body: Column(
+        children: [
+          // Add the Image widget at the top
+          Image.asset(
+            'assets/pirate_writing.jpeg', // Replace with the actual path to your image file
+            height: 350, // Adjust the height as needed
+            width: double.infinity,
+            fit: BoxFit.cover,
           ),
-        ),
-      ],
-    ),
-  );
-}
-
-
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextField(
+                  controller: _textInputController,
+                  decoration: InputDecoration(
+                    labelText: 'Enter your message here...',
+                  ),
+                ),
+                SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: _sendMessage,
+                  child: Text('Send'),
+                ),
+                SizedBox(height: 16),
+                Text('Revised Message: $_response'),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   // Widget build(BuildContext context) {
   //   return Scaffold(
