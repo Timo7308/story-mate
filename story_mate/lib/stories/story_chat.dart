@@ -1,171 +1,166 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-// Example of a destination page class
-// class StoryChatPage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Pirate Story'),
-//       ),
-//       body: Center(
-//         child: Text('Welcome to the Pirate Story chat page!'),
-//       ),
-//       MyHomePage(),
-//     );
-//   }
-// }
-
-// class StoryChatPage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//         // appBar: AppBar(
-//         //   title: Text('Pirate Story'),
-//         // ),
-//         body: Column(
-//           children: [
-//             // Add the Image widget here
-//             Image.asset(
-//               'assets/pirate_writing.jpeg',
-//               height: 200,
-//               width: double.infinity,
-//               fit: BoxFit.cover,
-//             ),
-//             Expanded(
-//               child: MyHomePage(),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-class StoryChatPage extends StatelessWidget {
+class StoryChatPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MyHomePage();
+  _StoryChatPageState createState() => _StoryChatPageState();
+}
+
+class _StoryChatPageState extends State<StoryChatPage> {
+  final List<types.Message> messages = [];
+  final TextEditingController _textController = TextEditingController();
+  final String apiKey = "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"; // Replace with your actual API key
+
+  @override
+  void initState() {
+    super.initState();
+    _addInitialMessage();
   }
-}
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
+  void _addInitialMessage() {
+    final initialMessage = types.TextMessage(
+      author: types.User(id: 'ai-id'),
+      createdAt: DateTime.now().millisecondsSinceEpoch,
+      id: 'initial-message-id',
+      text: "Ahoy! I'm the Pirate AI, ready to chat!",
+    );
+    messages.add(initialMessage);
+  }
 
-class _MyHomePageState extends State<MyHomePage> {
-  TextEditingController _textInputController = TextEditingController();
-  String _response = "";
+  void _handleSendPressed() async {
+    final userText = _textController.text.trim();
+    if (userText.isEmpty) return;
 
-  Future<void> _sendMessage() async {
-    final String apiKey = "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";
-    final String inputText = _textInputController.text;
-    final String resultText =
-        "Rewrite the following sentence/question just like pirate's converation in stories: " +
-            inputText;
+    _sendMessage(userText, 'user-id'); // Send user message
+    _textController.clear();
+    await _getResponse(userText);
+  }
 
-    try {
-      final response = await http.post(
-        Uri.parse('https://api.openai.com/v1/completions'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $apiKey',
-        },
-        body: jsonEncode({
-          'model': 'text-davinci-003', // Use "text-davinci-003" engine ver
-          'prompt': resultText,
-          'max_tokens': 150,
-        }),
-      );
+  void _sendMessage(String text, String authorId) {
+    final message = types.TextMessage(
+      author: types.User(id: authorId),
+      createdAt: DateTime.now().millisecondsSinceEpoch,
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      text: text,
+    );
+    setState(() => messages.insert(0, message));
+  }
 
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> data = jsonDecode(response.body);
-        setState(() {
-          _response = data['choices'][0]['text'];
-        });
-      } else {
-        setState(() {
-          _response = 'Error: ${response.statusCode}, ${response.body}';
-        });
-      }
-    } catch (error) {
-      setState(() {
-        _response = 'Error: $error';
-      });
+  Future<void> _getResponse(String userText) async {
+    final response = await http.post(
+      Uri.parse('https://api.openai.com/v1/engines/davinci/completions'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $apiKey',
+      },
+      body: jsonEncode({'prompt': userText, 'max_tokens': 150}),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final aiText = data['choices'][0]['text'].trim();
+      _sendMessage(aiText, 'ai-id'); // Send AI response
+    } else {
+      // Handle error...
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Pirate Story'),
-      ),
-      body: Column(
-        children: [
-          // Add the Image widget at the top
-          Image.asset(
-            'assets/pirate_writing.jpeg', // Replace with the actual path to your image file
-            height: 350, // Adjust the height as needed
-            width: double.infinity,
-            fit: BoxFit.cover,
+      appBar: _buildAppBar(),
+      body: _buildChatBody(),
+    );
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      leading: _buildBackButton(),
+      title: const Text('Pirate Story'),
+      actions: [_buildProfileButton()],
+    );
+  }
+
+  IconButton _buildBackButton() {
+    return IconButton(
+      icon: const Icon(Icons.arrow_back_ios_new_outlined),
+      onPressed: () {
+        Navigator.maybePop(context);
+      },
+    );
+  }
+
+  IconButton _buildProfileButton() {
+    return IconButton(
+      padding: const EdgeInsets.only(right: 15),
+      icon: const Icon(Icons.account_circle, size: 35),
+      onPressed: () {
+        // Navigate to profile page...
+      },
+    );
+  }
+
+  Column _buildChatBody() {
+    return Column(
+      children: [
+        Expanded(
+          child: Chat(
+            messages: messages,
+            user: const types.User(id: 'user-id'),
+            theme: _buildChatTheme(),
+            showUserNames: true,
+            customBottomWidget: _buildInputField(),
+            onSendPressed: (PartialText) {},
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextField(
-                  controller: _textInputController,
-                  decoration: InputDecoration(
-                    labelText: 'Enter your message here...',
-                  ),
-                ),
-                SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: _sendMessage,
-                  child: Text('Send'),
-                ),
-                SizedBox(height: 16),
-                Text('Revised Message: $_response'),
-              ],
+        ),
+      ],
+    );
+  }
+
+  DefaultChatTheme _buildChatTheme() {
+    return DefaultChatTheme(
+      primaryColor: const Color(0xFF0A2342),
+      secondaryColor: Colors.teal,
+      dateDividerTextStyle: TextStyle(color: Colors.grey[600], fontSize: 12),
+      inputTextDecoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(vertical: 30, horizontal: 0),
+        hintText: "Type a message",
+        border: InputBorder.none,
+        hintStyle: TextStyle(color: Colors.grey[500]),
+      ),
+    );
+  }
+
+  Widget _buildInputField() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _textController,
+              decoration: InputDecoration(
+                hintText: "Type a message",
+                border: InputBorder.none,
+                hintStyle: TextStyle(color: Colors.grey[500]),
+              ),
             ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.send, color: Color(0xFF0A2342)),
+            onPressed: _handleSendPressed,
           ),
         ],
       ),
     );
   }
-
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       title: Text('Pirate Story'),
-  //     ),
-  //     body: Padding(
-  //       padding: const EdgeInsets.all(16.0),
-  //       child: Column(
-  //         mainAxisAlignment: MainAxisAlignment.center,
-  //         children: [
-  //           TextField(
-  //             controller: _textInputController,
-  //             decoration: InputDecoration(
-  //               labelText: 'Enter your message here...',
-  //             ),
-  //           ),
-  //           SizedBox(height: 16),
-  //           ElevatedButton(
-  //             onPressed: _sendMessage,
-  //             child: Text('Send'),
-  //           ),
-  //           SizedBox(height: 16),
-  //           Text('Revised Message: $_response'),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 }
+
+
+
+
+
