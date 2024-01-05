@@ -8,14 +8,15 @@ bool Debug = true;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: const FirebaseOptions(
-      apiKey: "AIzaSyBcpIdHXRuS2eLo4zmw3i_rhLVpxil78Zk",
-      appId: "1:385510487289:android:c18d9d692e96c6c5805e28",
-      messagingSenderId: "385510487289",
-      projectId: "st-mate-3dcc6",
-    ),
-  );
+    await Firebase.initializeApp(
+      options: const FirebaseOptions(
+          apiKey: "AIzaSyBcpIdHXRuS2eLo4zmw3i_rhLVpxil78Zk",
+          appId: "1:385510487289:android:c18d9d692e96c6c5805e28",
+          messagingSenderId: "385510487289",
+          projectId: "st-mate-3dcc6",
+          databaseURL: 'https://st-mate-3dcc6-default-rtdb.europe-west1.firebasedatabase.app'
+      ),
+    );
   runApp(const MyApp());
 }
 
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       //change initial page for bootup here
 
-      home: Debug ? StoryChatPage() : WelcomePage(),
+      home: StoryChatPage(),
 
       //home: MyHomePage(), // make the openAI page as the default page after login
       debugShowCheckedModeBanner: false,

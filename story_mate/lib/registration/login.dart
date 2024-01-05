@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'homepage.dart'; // Import the HomePage widget
+import 'package:story_mate/stories/story_chat.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -21,21 +21,24 @@ class _LoginPageState extends State<LoginPage> {
         email: _emailController.text,
         password: _passwordController.text,
       );
-      // User logged in successfully, navigate to HomePage
+
       if (userCredential.user != null) {
+        // Fetch the userId
+        String userId = userCredential.user!.uid;
+
+        // You can now use this userId, for example, pass it to the HomePage
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => StoryChatPage()),
         );
       }
     } on FirebaseAuthException catch (e) {
-      // Handle different Firebase auth errors here
       print('Firebase Auth Error: ${e.message}');
     } catch (e) {
-      // Handle other errors
       print('Error: $e');
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
