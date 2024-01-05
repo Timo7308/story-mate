@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "385510487289",
+    "firebase_url": "https://st-mate-3dcc6-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "st-mate-3dcc6",
+    "storage_bucket": "st-mate-3dcc6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:385510487289:android:c18d9d692e96c6c5805e28",
+        "android_client_info": {
+          "package_name": "com.example.story_mate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcpIdHXRuS2eLo4zmw3i_rhLVpxil78Zk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
