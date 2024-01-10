@@ -37,9 +37,14 @@ class _ProfilePageState extends State<ProfilePage> {
                   Center(child: _profileImage()),
                   const SizedBox(height: 20),
                   _uploadButton(),
-                  _genderChoiceTile(Gender.male, 'Male'),
-                  _genderChoiceTile(Gender.female, 'Female'),
-                  _genderChoiceTile(Gender.other, 'Other'),
+                  const SizedBox(height: 50), // Reduced space here
+                  Text(
+                    'Your Gender',
+                    style: Theme.of(context).textTheme.displayMedium,
+                  ),
+
+                  const SizedBox(height: 30),
+                  _genderSegmentedButton(),
                   const SizedBox(height: 20),
                 ],
               ),
@@ -50,59 +55,78 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+
   Widget _profileImage() {
     if (_profileImageUrl != null) {
-      return Image.network(
-        _profileImageUrl!,
-        width: 150,
-        height: 150,
-        fit: BoxFit.cover,
+      return ClipOval(
+        child: Image.network(
+          _profileImageUrl!,
+          width: 150,
+          height: 150,
+          fit: BoxFit.cover,
+        ),
       );
     } else {
-      return const Icon(Icons.account_circle, size: 150);
+      return const ClipOval(
+        child: Icon(Icons.account_circle, size: 150),
+      );
     }
   }
 
   Widget _uploadButton() {
-    return Center(
-      child: SizedBox(
-        width: 300, // Set the width as per your requirement
-        child: ElevatedButton(
-          onPressed: () => _pickAndUploadImage(),
-          style: ElevatedButton.styleFrom(
-            // If you want to adjust the padding inside the button
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          ),
-          child: const Text('Upload Profile Picture'),
+    return InkWell(
+      onTap: () => _pickAndUploadImage(),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey[200], // Set the background color to light grey
+          borderRadius: BorderRadius.circular(20), // Set border radius
+        ),
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Upload Profile Picture ',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Icon(Icons.add, size: 20),
+          ],
         ),
       ),
     );
   }
-  Widget _genderChoiceTile(Gender gender, String text) {
-    return ListTile(
-      title: Text(text),
-      leading: Radio<Gender>(
-        value: gender,
-        groupValue: _selectedGender,
-        onChanged: (Gender? value) {
-          setState(() {
-            _selectedGender = value;
-          });
-          _saveGenderToFirebase(text.toLowerCase());
-        },
-      ),
+
+  Widget _genderSegmentedButton() {
+    return SegmentedButton<Gender>(
+      segments: const <ButtonSegment<Gender>>[
+        ButtonSegment<Gender>(value: Gender.male, label: Text('Male')),
+        ButtonSegment<Gender>(value: Gender.female, label: Text('Female')),
+        ButtonSegment<Gender>(value: Gender.other, label: Text('Other')),
+      ],
+      selected: _selectedGender != null
+          ? <Gender>{_selectedGender!}
+          : <Gender>{Gender.male}, // Default selection
+      onSelectionChanged: (Set<Gender> newSelection) {
+        setState(() {
+          _selectedGender = newSelection.first;
+        });
+        _saveGenderToFirebase(newSelection.first.toString().split('.')[1]);
+      },
     );
   }
 
   Positioned _finishSetupButton() {
     return Positioned(
-      bottom: 10, // Reduced value to move the button higher
+      bottom: 10,
       left: 15,
       right: 15,
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.9, // Adjust width as needed
+        width: MediaQuery.of(context).size.width * 0.9,
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 20), // Add padding to move the button up
+          padding: const EdgeInsets.only(bottom: 20),
           child: ElevatedButton(
             onPressed: () {
               Navigator.push(
@@ -117,7 +141,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-
   Future<void> _pickAndUploadImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
@@ -126,7 +149,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
       try {
         String userId = FirebaseAuth.instance.currentUser!.uid;
-        final firebaseStorageRef = FirebaseStorage.instance.ref().child('profile_pics/$userId');
+        final firebaseStorageRef =
+            FirebaseStorage.instance.ref().child('profile_pics/$userId');
         final uploadTask = firebaseStorageRef.putFile(file);
         final taskSnapshot = await uploadTask;
         final imageUrl = await taskSnapshot.ref.getDownloadURL();

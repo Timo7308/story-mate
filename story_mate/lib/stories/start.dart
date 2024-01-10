@@ -7,21 +7,82 @@ class StartPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Journeys'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.account_circle, size: 40.0),
+            onPressed: () {
+              // Add functionality for profile button
+            },
+          ),
+        ],
+        automaticallyImplyLeading: false,
       ),
-      body: const Center(
-        child: Text('Random connection or choose story'),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Opacity(
+                  opacity: 0.5, // 50% opacity
+                  child: Image.asset(
+                    'assets/HomeImage.png',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              SizedBox(height: 16.0),
+              Text(
+                'Ready, Set, Go!',
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
+              SizedBox(height: 16.0),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
+                  'Click the big button below to start your first chat or find out how it works.',
+                  style: TextStyle(fontSize: 16.0),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(height: 16.0),
+              InkWell(
+                onTap: () {
+                  // Add functionality for "How It Works?" button
+                },
+                child: Text(
+                  'How It Works?',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Navigate to another page when the button is pressed
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => StoryChatPage()), // Replace 'NextPage' with your destination page class
-          );
-        },
-        child: const Icon(Icons.navigate_next), // Icon for the button
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: SizedBox(
+        width: 380.0,
+        child: FloatingActionButton.extended(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => StoryChatPage(),
+              ),
+            );
+          },
+          label: Row(
+            children: [
+              Text('New Adventure'),
+              Icon(Icons.shuffle),
+            ],
+          ),
+        ),
       ),
     );
   }
 }
-

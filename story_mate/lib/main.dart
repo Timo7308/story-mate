@@ -130,6 +130,17 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
+        segmentedButtonTheme: SegmentedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            //primary: const Color.fromARGB(255, 170, 170, 170),
+            side: BorderSide(color: const Color(0xFF0A2342)),
+            //foregroundColor: Colors.white,
+            //backgroundColor: const Color(0xFF0A2342),
+            //disabledBackgroundColor: Color.fromARGB(255, 191, 191, 191),
+            //disabledForegroundColor: Color.fromARGB(255, 147, 147, 147),
+            surfaceTintColor: Color.fromARGB(255, 147, 147, 147),
+          ),
+        ),
 
         useMaterial3: true,
         scaffoldBackgroundColor: Colors.white, // white background
