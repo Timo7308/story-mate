@@ -42,7 +42,7 @@ class StartPage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
                   'Click the big button below to start your first chat or find out how it works.',
-                  style: TextStyle(fontSize: 16.0),
+                  style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),
               ),

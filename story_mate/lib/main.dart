@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:story_mate/registration/welcome.dart';
 import 'package:story_mate/stories/story_chat.dart';
+import 'package:flutter/services.dart';
 
 bool Debug = false;
 
@@ -16,6 +17,12 @@ Future<void> main() async {
         databaseURL:
             'https://st-mate-3dcc6-default-rtdb.europe-west1.firebasedatabase.app'),
   );
+
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.white, // Navigation bar color
+    statusBarColor: Colors.white, // Status bar color
+  ));
+
   runApp(const MyApp());
 }
 
