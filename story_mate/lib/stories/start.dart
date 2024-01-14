@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'story_chat.dart';
+import 'match.dart';
+import 'package:story_mate/profile/profile_check.dart';
 
 class StartPage extends StatelessWidget {
   @override
@@ -11,6 +12,10 @@ class StartPage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.account_circle, size: 40.0),
             onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CheckProfile()),
+              );
               // Add functionality for profile button
             },
           ),
@@ -71,7 +76,7 @@ class StartPage extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => StoryChatPage(),
+                builder: (context) => MatchPage(),
               ),
             );
           },
