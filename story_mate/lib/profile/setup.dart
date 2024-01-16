@@ -38,7 +38,7 @@ class _SetupPageState extends State<SetupPage>
     Future.delayed(Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => StartPage()),
+        MaterialPageRoute(builder: (context) => StartPage(userId: '',)),
       );
     });
   }

@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
       //change initial page for bootup here
 
       //home: StoryChatPage(),
-      home: Debug ? StoryChatPage() : WelcomePage(),
+      home: WelcomePage(),
 
       //home: MyHomePage(), // make the openAI page as the default page after login
       debugShowCheckedModeBanner: false,

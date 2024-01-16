@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:story_mate/stories/story_chat.dart';
+import 'package:story_mate/stories/start.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -29,7 +29,9 @@ class _LoginPageState extends State<LoginPage> {
         // You can now use this userId, for example, pass it to the HomePage
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => StoryChatPage()),
+          MaterialPageRoute(
+            builder: (context) => StartPage(userId: ''),
+          ),
         );
       }
     } on FirebaseAuthException catch (e) {
