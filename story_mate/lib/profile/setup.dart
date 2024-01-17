@@ -38,7 +38,8 @@ class _SetupPageState extends State<SetupPage>
     Future.delayed(Duration(seconds: 2), () {
       Navigator.pushNamedAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => StartPage()),
+        '/start', // Assuming you have a named route for StartPage
+        (route) => false, // Remove all previous routes
       );
     });
   }

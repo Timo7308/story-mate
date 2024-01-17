@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:story_mate/stories/story_chat.dart';
+import 'package:story_mate/stories/start.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -31,7 +32,8 @@ class _LoginPageState extends State<LoginPage> {
         // Successful login
         Navigator.pushNamedAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => StoryChatPage()),
+          '/start', // Assuming you have a named route for StartPage
+          (route) => false, // Remove all previous routes
         );
       }
     } on FirebaseAuthException catch (e) {
