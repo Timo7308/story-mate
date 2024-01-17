@@ -18,3 +18,7 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
+//the start.dart has the actual homescreen for now, lets ignore this one!
+
+

@@ -144,7 +144,7 @@ class _CheckProfileState extends State<CheckProfile> {
       padding: const EdgeInsets.all(20),
       child: TextButton.icon(
         onPressed: () {
-          // Implement logout functionality
+          _showLogoutConfirmationDialog();
         },
         icon: Icon(Icons.logout, color: Colors.red),
         label: const Text(
@@ -175,4 +175,43 @@ class _CheckProfileState extends State<CheckProfile> {
   Future<void> _pickAndUploadImage() async {
     // Implement the same method as in your ProfilePage for picking and uploading images
   }
+
+  void _showLogoutConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Text('Logout Confirmation'),
+          content: Text('Do you really want to log out of your account?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('No'),
+            ),
+            TextButton(
+              onPressed: () {
+                _logout(); // Implement your logout functionality
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _logout() {
+    // Implement your logout functionality here
+    // For example, you can use FirebaseAuth.instance.signOut()
+  }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: CheckProfile(),
+  ));
 }

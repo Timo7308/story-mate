@@ -37,12 +37,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   Center(child: _profileImage()),
                   const SizedBox(height: 20),
                   _uploadButton(),
-                  const SizedBox(height: 50), // Reduced space here
+                  const SizedBox(height: 50),
                   Text(
                     'Your Gender',
-                    style: Theme.of(context).textTheme.displayMedium,
+                    style: Theme.of(context).textTheme.headline6,
                   ),
-
                   const SizedBox(height: 30),
                   _genderSegmentedButton(),
                   const SizedBox(height: 20),
@@ -50,7 +49,18 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
-          _finishSetupButton(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SetupPage()),
+                );
+              },
+              child: const Text('Finish Setup'),
+            ),
+          ),
         ],
       ),
     );
@@ -115,29 +125,6 @@ class _ProfilePageState extends State<ProfilePage> {
         });
         _saveGenderToFirebase(newSelection.first.toString().split('.')[1]);
       },
-    );
-  }
-
-  Positioned _finishSetupButton() {
-    return Positioned(
-      bottom: 10,
-      left: 15,
-      right: 15,
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.9,
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 20),
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SetupPage()),
-              );
-            },
-            child: const Text('Finish Setup'),
-          ),
-        ),
-      ),
     );
   }
 

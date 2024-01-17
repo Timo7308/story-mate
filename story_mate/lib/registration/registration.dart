@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../profile/profile.dart'; // Ensure this is the correct path to your login page
+import '../profile/profile.dart';
 
 class RegistrationPage extends StatefulWidget {
-  const RegistrationPage({super.key});
+  const RegistrationPage({Key? key}) : super(key: key);
 
   @override
   _RegistrationPageState createState() => _RegistrationPageState();
@@ -14,11 +14,29 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final FocusNode _usernameFocus = FocusNode(); // Add this line
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool _loading = false;
 
-  final FirebaseAuth _auth = FirebaseAuth.instance; // Firebase Auth instance
+  @override
+  void initState() {
+    super.initState();
+    _usernameFocus.requestFocus(); // Set focus to the username field
+  }
 
   void _registerUser() async {
+    if (!_isValidUsername(_usernameController.text) ||
+        !_isValidEmail(_emailController.text) ||
+        !_isValidPassword(_passwordController.text)) {
+      _showErrorSnackbar("Invalid username, email, or password format.");
+      return;
+    }
+
     try {
+      setState(() {
+        _loading = true;
+      });
+
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
         email: _emailController.text,
@@ -32,7 +50,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
           'email': _emailController.text,
         });
 
-        // Navigate to ProfilePage
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -44,11 +61,37 @@ class _RegistrationPageState extends State<RegistrationPage> {
       }
     } on FirebaseAuthException catch (e) {
       print('Firebase Auth Error: ${e.message}');
-      // Optionally, show an error message to the user
+      _showErrorSnackbar("Error during registration: ${e.message}");
     } catch (e) {
       print('Error: $e');
-      // Optionally, show an error message to the user
+      _showErrorSnackbar("Error during registration: $e");
+    } finally {
+      setState(() {
+        _loading = false;
+      });
     }
+  }
+
+  bool _isValidUsername(String username) {
+    return username.isNotEmpty;
+  }
+
+  bool _isValidEmail(String email) {
+    return RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
+        .hasMatch(email);
+  }
+
+  bool _isValidPassword(String password) {
+    return password.length >= 6;
+  }
+
+  void _showErrorSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 3),
+      ),
+    );
   }
 
   @override
@@ -68,16 +111,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      // Username input field
                       TextField(
                         controller: _usernameController,
+                        focusNode: _usernameFocus, // Add this line
                         decoration: const InputDecoration(
                           labelText: 'Username',
                           border: OutlineInputBorder(),
                         ),
                       ),
                       const SizedBox(height: 20),
-                      // Email input field
                       TextField(
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
@@ -87,7 +129,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      // Password input field
                       TextField(
                         controller: _passwordController,
                         obscureText: true,
@@ -103,12 +144,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
               ],
             ),
           ),
-          // Register button
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
-              onPressed: _registerUser,
-              child: const Text('Register'),
+              onPressed: _loading ? null : _registerUser,
+              child: _loading
+                  ? CircularProgressIndicator(color: Colors.white)
+                  : const Text('Register'),
             ),
           ),
         ],

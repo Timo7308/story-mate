@@ -1,9 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 import 'login.dart';
 import 'registration.dart';
 
-class WelcomePage extends StatelessWidget {
-  const WelcomePage({Key? key});
+class WelcomePage extends StatefulWidget {
+  const WelcomePage({Key? key}) : super(key: key);
+
+  @override
+  _WelcomePageState createState() => _WelcomePageState();
+}
+
+class _WelcomePageState extends State<WelcomePage> {
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.asset('assets/WelcomeAnimation.mp4')
+      ..initialize().then((_) {
+        setState(() {});
+      })
+      ..setLooping(true)
+      ..play();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +32,6 @@ class WelcomePage extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          // Text "Story Mate" at the top
           const Align(
             alignment: Alignment.topCenter,
             child: Padding(
@@ -24,7 +42,6 @@ class WelcomePage extends StatelessWidget {
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Literata',
-                  // color: Colors.black,
                   shadows: [
                     Shadow(
                       color: Color.fromARGB(255, 228, 228, 228),
@@ -36,16 +53,19 @@ class WelcomePage extends StatelessWidget {
               ),
             ),
           ),
-
-          // Expanded section for the Welcome Image and Text
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  'assets/WelcomeImage.png',
-                  //fit: BoxFit.contain,
-                ),
+                _controller.value.isInitialized
+                    ? Container(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        height: MediaQuery.of(context).size.width *
+                            0.8 /
+                            _controller.value.aspectRatio,
+                        child: VideoPlayer(_controller),
+                      )
+                    : CircularProgressIndicator(),
                 const SizedBox(height: 20),
                 Text(
                   'Make new friends,\nwrite new stories',
@@ -56,21 +76,16 @@ class WelcomePage extends StatelessWidget {
                 Text(
                   'Empowered by AI',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyLarge,
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
             ),
           ),
-
-          // Buttons at the bottom
           Align(
             alignment: Alignment.bottomCenter,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                // Button to navigate to the Login page
-
-                // Button to navigate to the Registration page
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20,
@@ -99,26 +114,34 @@ class WelcomePage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const LoginPage()),
+                          builder: (context) => const LoginPage(),
+                        ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(
-                          255, 232, 232, 232), // Set the button color to grey
+                      backgroundColor: Colors.grey[200],
                     ),
-                    child: const Text('Login',
-                        style: TextStyle(
-                          color: Colors.black,
-                        )),
+                    child: const Text(
+                      'Login',
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 5), // Space between buttons
-                // Space at the bottom
+                const SizedBox(height: 5),
               ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    print('Dispose function is called');
+    super.dispose();
+    _controller.dispose();
   }
 }

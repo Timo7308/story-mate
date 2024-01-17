@@ -3,6 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:story_mate/registration/welcome.dart';
 import 'package:story_mate/stories/story_chat.dart';
 import 'package:flutter/services.dart';
+import 'package:story_mate/stories/start.dart';
+import 'package:logging/logging.dart';
 
 bool Debug = false;
 
@@ -24,6 +26,10 @@ Future<void> main() async {
   ));
 
   runApp(const MyApp());
+}
+
+void setupLogging() {
+  Logger.root.level = Level.INFO; // Set the overall log level
 }
 
 class MyApp extends StatelessWidget {
@@ -56,6 +62,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     const primaryColor = Color(0xFF0A2342);
     return MaterialApp(
+      routes: {
+        '/start': (context) => StartPage(),
+        // Other routes...
+      },
       //change initial page for bootup here
 
       //home: StoryChatPage(),
@@ -130,7 +140,7 @@ class MyApp extends StatelessWidget {
             ),
             textStyle: const TextStyle(
               fontFamily: 'Lato',
-              fontSize: 20,
+              fontSize: 16,
               color: Colors.white,
 
               //  ),

@@ -36,9 +36,9 @@ class _SetupPageState extends State<SetupPage>
 
     // Wait for the animation to complete before navigating
     Future.delayed(Duration(seconds: 2), () {
-      Navigator.pushReplacement(
+      Navigator.pushNamedAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => StartPage(userId: '',)),
+        MaterialPageRoute(builder: (context) => StartPage()),
       );
     });
   }
