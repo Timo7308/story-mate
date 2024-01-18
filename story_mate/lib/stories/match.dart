@@ -62,7 +62,7 @@ class _MatchPageState extends State<MatchPage> with SingleTickerProviderStateMix
         .collection('users')
         .where('loginStatus', isEqualTo: 'online')
         .where('status', isEqualTo: 1)
-        //.where('id', isNotEqualTo: userId)
+        .where('id', isNotEqualTo: userId)
         .get();
 
     // Check if there are any matching users
@@ -105,12 +105,12 @@ class _MatchPageState extends State<MatchPage> with SingleTickerProviderStateMix
             const SizedBox(height: 20.0),
             Text(
               'Connecting you...',
-              style: Theme.of(context).textTheme.display1,
+              style: Theme.of(context).textTheme.headline4,
             ),
             const SizedBox(height: 10.0),
             Text(
               'Selected Choice ID: ${widget.selectedChoiceId}',
-              style: Theme.of(context).textTheme.body1,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
             const SizedBox(height: 10.0),
             FutureBuilder<DocumentSnapshot?>(
@@ -121,7 +121,7 @@ class _MatchPageState extends State<MatchPage> with SingleTickerProviderStateMix
                     // Display the selected user's ID
                     return Text(
                       'Selected User ID: ${snapshot.data!['id']}',
-                      style: Theme.of(context).textTheme.body1,
+                      style: Theme.of(context).textTheme.bodyText1,
                     );
                   } else {
                     return Text('No matching users found.');
