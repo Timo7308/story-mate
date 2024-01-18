@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MatchPage extends StatefulWidget {
   final String selectedChoiceId;
@@ -10,8 +13,7 @@ class MatchPage extends StatefulWidget {
   _MatchPageState createState() => _MatchPageState();
 }
 
-class _MatchPageState extends State<MatchPage>
-    with SingleTickerProviderStateMixin {
+class _MatchPageState extends State<MatchPage> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
   late String userId = ""; // Variable to store the userid
@@ -54,6 +56,25 @@ class _MatchPageState extends State<MatchPage>
     }
   }
 
+  Future<DocumentSnapshot?> getRandomOnlineUser() async {
+    // Query users based on the criteria
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('loginStatus', isEqualTo: 'online')
+        .where('status', isEqualTo: 1)
+        //.where('id', isNotEqualTo: userId)
+        .get();
+
+    // Check if there are any matching users
+    if (querySnapshot.docs.isNotEmpty) {
+      // Select a random user
+      final int randomIndex = Random().nextInt(querySnapshot.docs.length);
+      return querySnapshot.docs[randomIndex];
+    } else {
+      return null;
+    }
+  }
+
   @override
   void dispose() {
     _animationController.dispose();
@@ -84,17 +105,31 @@ class _MatchPageState extends State<MatchPage>
             const SizedBox(height: 20.0),
             Text(
               'Connecting you...',
-              style: Theme.of(context).textTheme.displayLarge,
+              style: Theme.of(context).textTheme.display1,
             ),
             const SizedBox(height: 10.0),
             Text(
               'Selected Choice ID: ${widget.selectedChoiceId}',
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: Theme.of(context).textTheme.body1,
             ),
             const SizedBox(height: 10.0),
-            Text(
-              'Logged-in user ID: $userId', // Display the userid
-              style: Theme.of(context).textTheme.bodyLarge,
+            FutureBuilder<DocumentSnapshot?>(
+              future: getRandomOnlineUser(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasData) {
+                    // Display the selected user's ID
+                    return Text(
+                      'Selected User ID: ${snapshot.data!['id']}',
+                      style: Theme.of(context).textTheme.body1,
+                    );
+                  } else {
+                    return Text('No matching users found.');
+                  }
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
             ),
             const SizedBox(height: 30.0),
             AnimatedBuilder(
