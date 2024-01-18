@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class MatchPage extends StatefulWidget {
+  final String selectedChoiceId;
+
+  MatchPage({required this.selectedChoiceId});
+
   @override
   _MatchPageState createState() => _MatchPageState();
 }
@@ -17,7 +21,7 @@ class _MatchPageState extends State<MatchPage>
     _animationController = AnimationController(
       vsync: this,
       duration:
-          Duration(seconds: 1), // Increased duration for a smoother animation
+      Duration(seconds: 1), // Increased duration for a smoother animation
     );
 
     _animation = Tween<double>(
@@ -31,7 +35,7 @@ class _MatchPageState extends State<MatchPage>
     );
 
     // Start the animation
-    _animationController.repeat(); // Repeat the animation for loading symbol
+    _animationController.repeat(); // Repeat the animation for the loading symbol
   }
 
   @override
@@ -68,7 +72,7 @@ class _MatchPageState extends State<MatchPage>
             ),
             const SizedBox(height: 10.0),
             Text(
-              'Please wait, we are searching for a partner',
+              'Selected Choice ID: ${widget.selectedChoiceId}', // Display the ID
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             const SizedBox(height: 30.0),
@@ -77,7 +81,7 @@ class _MatchPageState extends State<MatchPage>
               builder: (context, child) {
                 return Transform.rotate(
                   angle:
-                      _animation.value * 2 * 3.14, // Full rotation in radians
+                  _animation.value * 2 * 3.14, // Full rotation in radians
                   child: Image.asset(
                     'assets/LoadingCircle.png',
                     width: 50.0, // Adjust the size as needed

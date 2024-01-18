@@ -40,30 +40,35 @@ class _ChoicePageState extends State<ChoicePage> {
                     icon: Icons.flag,
                     onPressed: () => selectChoice('A Pirate Tale'),
                     selected: selectedChoice == 'A Pirate Tale',
+                    selectedChoice: '1',
                   ),
                   buildChoiceButton(
                     text: 'A Space Adventure',
                     icon: Icons.rocket,
                     onPressed: () => selectChoice('A Space Adventure'),
                     selected: selectedChoice == 'A Space Adventure',
+                    selectedChoice: '2',
                   ),
                   buildChoiceButton(
                     text: 'A Medieval Story',
                     icon: Icons.fort,
                     onPressed: () => selectChoice('A Medieval Story'),
                     selected: selectedChoice == 'A Medieval Story',
+                    selectedChoice: '3',
                   ),
                   buildChoiceButton(
                     text: 'A Fairy Tale',
                     icon: Icons.book,
                     onPressed: () => selectChoice('A Fairy Tale'),
                     selected: selectedChoice == 'A Fairy Tale',
+                    selectedChoice: '4',
                   ),
                   buildChoiceButton(
                     text: 'A Zombie Apocalypse',
                     icon: Icons.warning,
                     onPressed: () => selectChoice('A Zombie Apocalypse'),
                     selected: selectedChoice == 'A Zombie Apocalypse',
+                    selectedChoice: '5',
                   ),
                 ],
               ),
@@ -75,11 +80,11 @@ class _ChoicePageState extends State<ChoicePage> {
             ),
             SizedBox(height: 32.0),
             ElevatedButton(
-              onPressed: () {
+              onPressed: (selectedChoice) {
                 if (selectedChoice != null) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MatchPage()),
+                    MaterialPageRoute(builder: (context) => MatchPage(selectedChoiceId: selectedChoice)),
                   );
                 } else {
                   // Show a snackbar or some feedback indicating a choice must be made
