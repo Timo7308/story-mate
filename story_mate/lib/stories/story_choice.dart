@@ -8,6 +8,7 @@ class ChoicePage extends StatefulWidget {
 
 class _ChoicePageState extends State<ChoicePage> {
   String? selectedChoice;
+  late String selected;
 
   @override
   Widget build(BuildContext context) {
@@ -78,23 +79,30 @@ class _ChoicePageState extends State<ChoicePage> {
               'You will be assigned to a partner that picked the same story as you',
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 32.0),
-            ElevatedButton(
-              onPressed: (selectedChoice) {
-                if (selectedChoice != null) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MatchPage(selectedChoiceId: selectedChoice)),
-                  );
-                } else {
-                  // Show a snackbar or some feedback indicating a choice must be made
-                }
-              },
-              style: ElevatedButton.styleFrom(
+        ElevatedButton(
+          onPressed: () {
+            if (selectedChoice != null) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MatchPage(selectedChoiceId: selectedChoice!),
+                ),
+              );
+            } else {
+              // Handle the case where selectedChoice is null.
+              // You can show an error message, navigate to a default page, etc.
+            }
+          },
+
+
+
+        style: ElevatedButton.styleFrom(
                 primary: selectedChoice != null
                     ? Color(0xFF0A2342)
                     : Color(0xFFF7F7FC),
               ),
+
+
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -120,7 +128,7 @@ class _ChoicePageState extends State<ChoicePage> {
     required String text,
     required IconData icon,
     required VoidCallback onPressed,
-    required bool selected,
+    required String selectedChoice, required bool selected,
   }) {
     Color buttonColor = selected ? Color(0xFF2CA58D) : Color(0xFFF7F7FC);
     Color textColor =
