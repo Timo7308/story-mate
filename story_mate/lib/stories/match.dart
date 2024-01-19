@@ -53,15 +53,18 @@ class _MatchPageState extends State<MatchPage>
         loggedInUserId = user.uid;
       });
       print('Logged-in user ID: $loggedInUserId');
+
+      // Fetch the userid for another online user
+      await fetchSecondUser();
     } else {
       print('No user is currently logged in');
     }
-
-    // Fetch and print the userid for a second user
-    fetchSecondUser();
   }
 
   Future<void> fetchSecondUser() async {
+    // Delay to ensure that the login process is complete
+    await Future.delayed(Duration(seconds: 2));
+
     DocumentSnapshot? secondUserSnapshot = await getRandomOnlineUser();
 
     if (secondUserSnapshot != null) {
