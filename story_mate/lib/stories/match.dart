@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,10 +11,12 @@ class MatchPage extends StatefulWidget {
   _MatchPageState createState() => _MatchPageState();
 }
 
-class _MatchPageState extends State<MatchPage> with SingleTickerProviderStateMixin {
+class _MatchPageState extends State<MatchPage>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
-  late String userId = ""; // Variable to store the userid
+  late String loggedInUserId = ""; // Variable to store the logged-in userid
+  late String secondUserId = ""; // Variable to store the second user's userid
 
   @override
   void initState() {
@@ -37,7 +37,7 @@ class _MatchPageState extends State<MatchPage> with SingleTickerProviderStateMix
       ),
     );
 
-    // Fetch and print the userid when the page initializes
+    // Fetch and print the userId when the page initializes
     fetchAndPrintUserId();
 
     // Start the animation
@@ -49,27 +49,44 @@ class _MatchPageState extends State<MatchPage> with SingleTickerProviderStateMix
 
     if (user != null) {
       // Assuming you store the userid in the Firebase user object
-      userId = user.uid;
-      print('Logged-in user ID: $userId');
+      setState(() {
+        loggedInUserId = user.uid;
+      });
+      print('Logged-in user ID: $loggedInUserId');
     } else {
       print('No user is currently logged in');
+    }
+
+    // Fetch and print the userid for a second user
+    fetchSecondUser();
+  }
+
+  Future<void> fetchSecondUser() async {
+    DocumentSnapshot? secondUserSnapshot = await getRandomOnlineUser();
+
+    if (secondUserSnapshot != null) {
+      setState(() {
+        secondUserId = secondUserSnapshot.id;
+      });
+      print('Second user ID: $secondUserId');
+    } else {
+      print('No matching second user found.');
     }
   }
 
   Future<DocumentSnapshot?> getRandomOnlineUser() async {
     // Query users based on the criteria
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
         .collection('users')
         .where('loginStatus', isEqualTo: 'online')
-        .where('status', isEqualTo: 1)
-        //.where('id', isNotEqualTo: userId)
+        .limit(1) // Limit to 1 document
         .get();
 
     // Check if there are any matching users
     if (querySnapshot.docs.isNotEmpty) {
-      // Select a random user
-      final int randomIndex = Random().nextInt(querySnapshot.docs.length);
-      return querySnapshot.docs[randomIndex];
+      // Select the first (and only) document
+      return querySnapshot.docs.first;
     } else {
       return null;
     }
@@ -105,31 +122,22 @@ class _MatchPageState extends State<MatchPage> with SingleTickerProviderStateMix
             const SizedBox(height: 20.0),
             Text(
               'Connecting you...',
-              style: Theme.of(context).textTheme.display1,
+              style: Theme.of(context).textTheme.headline1,
             ),
             const SizedBox(height: 10.0),
             Text(
               'Selected Choice ID: ${widget.selectedChoiceId}',
-              style: Theme.of(context).textTheme.body1,
+              style: Theme.of(context).textTheme.headline1,
             ),
             const SizedBox(height: 10.0),
-            FutureBuilder<DocumentSnapshot?>(
-              future: getRandomOnlineUser(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasData) {
-                    // Display the selected user's ID
-                    return Text(
-                      'Selected User ID: ${snapshot.data!['id']}',
-                      style: Theme.of(context).textTheme.body1,
-                    );
-                  } else {
-                    return Text('No matching users found.');
-                  }
-                } else {
-                  return CircularProgressIndicator();
-                }
-              },
+            Text(
+              'Logged-in User ID: $loggedInUserId', // Display the loggedInUserId
+              style: Theme.of(context).textTheme.headline1,
+            ),
+            const SizedBox(height: 10.0),
+            Text(
+              'Second User ID: $secondUserId', // Display the secondUserId
+              style: Theme.of(context).textTheme.headline1,
             ),
             const SizedBox(height: 30.0),
             AnimatedBuilder(
