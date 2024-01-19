@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
+import 'package:story_mate/stories/story_chat.dart'; // Import the chat page
 
 class MatchPage extends StatefulWidget {
   final String selectedChoiceId;
@@ -13,18 +14,19 @@ class MatchPage extends StatefulWidget {
 }
 
 class _MatchPageState extends State<MatchPage>
-    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
   late String loggedInUserId = "";
   late String secondUserId = "";
 
-  late StreamSubscription<QuerySnapshot<Map<String, dynamic>>> _onlineUsersSubscription;
+
+  late StreamSubscription<QuerySnapshot<Map<String, dynamic>>>
+  _onlineUsersSubscription;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addObserver(this);
 
     _animationController = AnimationController(
       vsync: this,
@@ -76,6 +78,11 @@ class _MatchPageState extends State<MatchPage>
         secondUserId = secondUserSnapshot.id;
       });
       print('Second user ID: $secondUserId');
+
+      // Check if both users are found, then navigate to the chat page
+      if (secondUserId.isNotEmpty) {
+        navigateToChatPage();
+      }
     } else {
       print('No matching second user found.');
     }
@@ -107,7 +114,8 @@ class _MatchPageState extends State<MatchPage>
         .snapshots()
         .listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
       // Handle updates to the online user list
-      print('Online users updated: ${snapshot.docs.map((doc) => doc.id).toList()}');
+      print(
+          'Online users updated: ${snapshot.docs.map((doc) => doc.id).toList()}');
       // Update the second user ID
       updateSecondUserId(snapshot);
     });
@@ -128,6 +136,11 @@ class _MatchPageState extends State<MatchPage>
         secondUserId = onlineUsers.first;
       });
       print('Updated Second user ID: $secondUserId');
+
+      // Check if both users are found, then navigate to the chat page
+      if (loggedInUserId.isNotEmpty && secondUserId.isNotEmpty) {
+        navigateToChatPage();
+      }
     } else {
       // No matching second user found
       setState(() {
@@ -137,19 +150,25 @@ class _MatchPageState extends State<MatchPage>
     }
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      // When the app is resumed, refetch online users
-      fetchAndPrintUserId();
-    }
+  Future<void> navigateToChatPage() async {
+    // Navigate to the chat page
+    await Future.delayed(Duration(seconds: 3));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => StoryChatPage(
+          // Pass necessary information to the chat page
+          loggedInUserId: loggedInUserId,
+          secondUserId: secondUserId,
+        ),
+      ),
+    );
   }
 
   @override
   void dispose() {
     _animationController.dispose();
     _onlineUsersSubscription.cancel();
-    WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }
 
