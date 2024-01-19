@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:async';
 
 class MatchPage extends StatefulWidget {
   final String selectedChoiceId;
@@ -12,15 +13,18 @@ class MatchPage extends StatefulWidget {
 }
 
 class _MatchPageState extends State<MatchPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late AnimationController _animationController;
   late Animation<double> _animation;
-  late String loggedInUserId = ""; // Variable to store the logged-in userid
-  late String secondUserId = ""; // Variable to store the second user's userid
+  late String loggedInUserId = "";
+  late String secondUserId = "";
+
+  late StreamSubscription<QuerySnapshot<Map<String, dynamic>>> _onlineUsersSubscription;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance?.addObserver(this);
 
     _animationController = AnimationController(
       vsync: this,
@@ -37,10 +41,8 @@ class _MatchPageState extends State<MatchPage>
       ),
     );
 
-    // Fetch and print the userId when the page initializes
     fetchAndPrintUserId();
 
-    // Start the animation
     _animationController.repeat();
   }
 
@@ -48,7 +50,6 @@ class _MatchPageState extends State<MatchPage>
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
-      // Assuming you store the userid in the Firebase user object
       setState(() {
         loggedInUserId = user.uid;
       });
@@ -56,6 +57,9 @@ class _MatchPageState extends State<MatchPage>
 
       // Fetch the userid for another online user
       await fetchSecondUser();
+
+      // Subscribe to online user updates
+      subscribeToOnlineUsers();
     } else {
       print('No user is currently logged in');
     }
@@ -95,9 +99,57 @@ class _MatchPageState extends State<MatchPage>
     }
   }
 
+  void subscribeToOnlineUsers() {
+    // Subscribe to updates on the online users collection
+    _onlineUsersSubscription = FirebaseFirestore.instance
+        .collection('users')
+        .where('loginStatus', isEqualTo: 'online')
+        .snapshots()
+        .listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
+      // Handle updates to the online user list
+      print('Online users updated: ${snapshot.docs.map((doc) => doc.id).toList()}');
+      // Update the second user ID
+      updateSecondUserId(snapshot);
+    });
+  }
+
+  void updateSecondUserId(QuerySnapshot<Map<String, dynamic>> snapshot) {
+    // Get the ID of the currently logged-in user
+    String loggedInUserId = FirebaseAuth.instance.currentUser?.uid ?? '';
+
+    // Exclude the logged-in user
+    List<String> onlineUsers = snapshot.docs
+        .map((doc) => doc.id)
+        .where((userId) => userId != loggedInUserId)
+        .toList();
+
+    if (onlineUsers.isNotEmpty) {
+      setState(() {
+        secondUserId = onlineUsers.first;
+      });
+      print('Updated Second user ID: $secondUserId');
+    } else {
+      // No matching second user found
+      setState(() {
+        secondUserId = '';
+      });
+      print('No matching second user found.');
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // When the app is resumed, refetch online users
+      fetchAndPrintUserId();
+    }
+  }
+
   @override
   void dispose() {
     _animationController.dispose();
+    _onlineUsersSubscription.cancel();
+    WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }
 
@@ -134,12 +186,12 @@ class _MatchPageState extends State<MatchPage>
             ),
             const SizedBox(height: 10.0),
             Text(
-              'Logged-in User ID: $loggedInUserId', // Display the loggedInUserId
+              'Logged-in User ID: $loggedInUserId',
               style: Theme.of(context).textTheme.headline1,
             ),
             const SizedBox(height: 10.0),
             Text(
-              'Second User ID: $secondUserId', // Display the secondUserId
+              'Second User ID: $secondUserId',
               style: Theme.of(context).textTheme.headline1,
             ),
             const SizedBox(height: 30.0),
