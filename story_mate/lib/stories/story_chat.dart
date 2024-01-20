@@ -19,8 +19,7 @@ class StoryChatPage extends StatefulWidget {
 class _StoryChatPageState extends State<StoryChatPage> {
   final List<types.Message> messages = [];
   final TextEditingController _textController = TextEditingController();
-  final String apiKey =
-      "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"; // Replace with your actual API key
+  //final String apiKey = "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"; // The second API Key
   final String chatId = "fixed-chat-id";
 
   @override
@@ -69,24 +68,56 @@ class _StoryChatPageState extends State<StoryChatPage> {
     });
   }
 
+
   Future<void> _getResponse(String userText) async {
+    final apiKey = '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'; // Replace with your actual API key
+    final endpoint = 'https://api.openai.com/v1/chat/completions';
+
     final response = await http.post(
-      Uri.parse('https://api.openai.com/v1/engines/davinci/completions'),
+      Uri.parse(endpoint),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $apiKey',
       },
-      body: jsonEncode({'prompt': userText, 'max_tokens': 150}),
+      body: jsonEncode({
+        'model': 'gpt-3.5-turbo-1106',
+        'messages': [
+          {'role': 'system', 'content': 'How old are you chatGPT?'},
+          {'role': 'user', 'content': userText},
+        ],
+        'max_tokens': 150,
+      }),
     );
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      final aiText = 'This is the chatGPT response: ' + data['choices'][0]['text'].trim();
+      final aiText = data['choices'][0]['message']['content'].trim();
       _sendMessage(aiText, 'ai-id', chatId); // Send AI response
     } else {
       // Handle error...
     }
   }
+
+
+
+  // Future<void> _getResponse(String userText) async {
+  //   final response = await http.post(
+  //     Uri.parse('https://api.openai.com/v1/engines/davinci/completions'),
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Authorization': 'Bearer $apiKey',
+  //     },
+  //     body: jsonEncode({'prompt': userText, 'max_tokens': 150}),
+  //   );
+  //
+  //   if (response.statusCode == 200) {
+  //     final data = jsonDecode(response.body);
+  //     final aiText = data['choices'][0]['text'].trim();
+  //     _sendMessage(aiText, 'ai-id', chatId); // Send AI response
+  //   } else {
+  //     // Handle error...
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
