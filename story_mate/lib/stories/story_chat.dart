@@ -47,7 +47,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
   void _handleSendPressed(types.PartialText text) async {
     final userText = text.text.trim();
     if (userText.isEmpty) return;
-    String dynamicPrompt = userText;
+    final dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Pirate" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' +userText;
 
     _sendMessage(userText, widget.loggedInUserId, chatId); // Send user message
     await _getResponse(userText,dynamicPrompt);
@@ -86,7 +86,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
         'model': 'gpt-3.5-turbo-1106',
         'messages': [
           {'role': 'user', 'content': dynamicPrompt},
-        // {'role': 'user', 'content': userText},
+          //{'role': 'system', 'content': userText},
         ],
         'max_tokens': 150,
       }),
