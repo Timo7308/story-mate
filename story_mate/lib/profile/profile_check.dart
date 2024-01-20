@@ -15,6 +15,7 @@ class CheckProfile extends StatefulWidget {
 class _CheckProfileState extends State<CheckProfile> {
   String? _profileImageUrl;
   String? _gender;
+  String? _about;
   final ImagePicker _picker = ImagePicker();
 
   @override
@@ -55,8 +56,6 @@ class _CheckProfileState extends State<CheckProfile> {
     );
   }
 
-  // Widget methods...
-
   Future<void> _loadProfileData() async {
     try {
       // Get the current user's ID
@@ -76,10 +75,14 @@ class _CheckProfileState extends State<CheckProfile> {
         imageUrl = await _getDownloadUrl(imageUrl);
       }
 
+      // Get 'about' field from Firestore
+      String about = userSnapshot['about'] ?? '';
+
       // Update state with fetched data
       setState(() {
         _profileImageUrl = imageUrl;
         _gender = userSnapshot['gender'];
+        _about = about;
       });
     } catch (e) {
       print('Error loading profile data: $e');
@@ -102,8 +105,6 @@ class _CheckProfileState extends State<CheckProfile> {
     // Implement the same method as in your ProfilePage for picking and uploading images
     // Placeholder: Implement this method using _picker and Firebase Storage
   }
-
-  // Other methods...
 
   Widget _profileImage() {
     if (_profileImageUrl != null) {
@@ -166,27 +167,114 @@ class _CheckProfileState extends State<CheckProfile> {
 
   Widget _aboutSection() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           'About:',
           style: Theme.of(context).textTheme.subtitle1,
         ),
         const SizedBox(height: 10),
-        GestureDetector(
-          onTap: () {
-            // Handle edit about section
-          },
-          child: const Text(
-            'Edit',
-            style: TextStyle(
-              color: Colors.blue,
-              decoration: TextDecoration.underline,
-            ),
+        if (_about != null)
+          Column(
+            children: [
+              Text(
+                _about!,
+                style: Theme.of(context).textTheme.bodyText1,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 10),
+              _editAboutButton(),
+            ],
           ),
-        ),
+        if (_about == null) _addAboutButton(),
       ],
     );
+  }
+
+  Widget _editAboutButton() {
+    return GestureDetector(
+      onTap: () {
+        _editAboutSection();
+      },
+      child: Text(
+        'Edit',
+        style: TextStyle(
+          color: Colors.blue,
+          decoration: TextDecoration.underline,
+        ),
+      ),
+    );
+  }
+
+  Widget _addAboutButton() {
+    return GestureDetector(
+      onTap: () {
+        _editAboutSection();
+      },
+      child: Text(
+        'Add About',
+        style: TextStyle(
+          color: Colors.blue,
+          decoration: TextDecoration.underline,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _editAboutSection() async {
+    TextEditingController aboutController = TextEditingController(text: _about);
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(_about != null ? 'Edit About' : 'Add About'),
+          content: TextField(
+            controller: aboutController,
+            decoration: InputDecoration(labelText: 'About'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                String newAbout = aboutController.text.trim();
+                Navigator.of(context).pop();
+
+                // Update 'about' field in Firestore
+                await _updateAbout(newAbout);
+              },
+              child: Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _updateAbout(String newAbout) async {
+    try {
+      // Get the current user's ID
+      String userId = FirebaseAuth.instance.currentUser!.uid;
+
+      // Update 'about' field in Firestore
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .update({'about': newAbout});
+
+      // Update state with the new 'about' value
+      setState(() {
+        _about = newAbout;
+      });
+    } catch (e) {
+      print('Error updating about section: $e');
+      // Handle errors
+    }
   }
 
   Widget _logoutButton() {

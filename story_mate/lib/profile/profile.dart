@@ -9,7 +9,7 @@ import 'setup.dart'; // Ensure this is your correct import
 enum Gender { male, female, other }
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -56,6 +56,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 if (_selectedGender == null) {
                   _saveGenderToFirebase('male');
                 }
+
+                // Set a default value for the about field, you can modify this as needed
+                String about = "-";
+
+                // Save the about field to Firebase
+                _saveAboutToFirebase(about);
 
                 Navigator.push(
                   context,
@@ -186,6 +192,18 @@ class _ProfilePageState extends State<ProfilePage> {
       print('Profile image URL updated to $imageUrl');
     }).catchError((error) {
       print('Error updating profile image URL: $error');
+    });
+  }
+
+  void _saveAboutToFirebase(String about) {
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+
+    FirebaseFirestore.instance.collection('users').doc(userId).update({
+      'about': about,
+    }).then((_) {
+      print('About updated to $about');
+    }).catchError((error) {
+      print('Error updating about: $error');
     });
   }
 }
