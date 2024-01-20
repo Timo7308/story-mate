@@ -53,6 +53,10 @@ class _ProfilePageState extends State<ProfilePage> {
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             child: ElevatedButton(
               onPressed: () {
+                if (_selectedGender == null) {
+                  _saveGenderToFirebase('male');
+                }
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => SetupPage()),
@@ -121,9 +125,12 @@ class _ProfilePageState extends State<ProfilePage> {
           : <Gender>{Gender.male}, // Default selection
       onSelectionChanged: (Set<Gender> newSelection) {
         setState(() {
-          _selectedGender = newSelection.first;
+          _selectedGender = newSelection.isNotEmpty
+              ? newSelection.first
+              : null; // Set to null if no selection is made
         });
-        _saveGenderToFirebase(newSelection.first.toString().split('.')[1]);
+        _saveGenderToFirebase(
+            _selectedGender?.toString().split('.')[1] ?? 'male');
       },
     );
   }
@@ -142,6 +149,9 @@ class _ProfilePageState extends State<ProfilePage> {
         final taskSnapshot = await uploadTask;
         final imageUrl = await taskSnapshot.ref.getDownloadURL();
 
+        // Store the image URL in the Firebase Firestore
+        _saveImageUrlToFirebase(imageUrl);
+
         setState(() {
           _profileImageUrl = imageUrl;
         });
@@ -153,12 +163,29 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void _saveGenderToFirebase(String gender) {
     String userId = FirebaseAuth.instance.currentUser!.uid;
+
+    // Check if the user has made a selection, if not, default to 'male'
+    if (gender.isEmpty) {
+      gender = 'male';
+    }
+
     FirebaseFirestore.instance.collection('users').doc(userId).update({
       'gender': gender,
     }).then((_) {
       print('Gender updated to $gender');
     }).catchError((error) {
       print('Error updating gender: $error');
+    });
+  }
+
+  void _saveImageUrlToFirebase(String imageUrl) {
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+    FirebaseFirestore.instance.collection('users').doc(userId).update({
+      'profileImageUrl': imageUrl,
+    }).then((_) {
+      print('Profile image URL updated to $imageUrl');
+    }).catchError((error) {
+      print('Error updating profile image URL: $error');
     });
   }
 }

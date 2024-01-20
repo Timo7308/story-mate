@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CheckProfile extends StatefulWidget {
@@ -53,6 +54,56 @@ class _CheckProfileState extends State<CheckProfile> {
       ),
     );
   }
+
+  // Widget methods...
+
+  Future<void> _loadProfileData() async {
+    try {
+      // Get the current user's ID
+      String userId = FirebaseAuth.instance.currentUser!.uid;
+
+      // Fetch user data from Firestore
+      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+
+      // Get profile image URL from Firestore
+      String imageUrl = userSnapshot['profileImageUrl'];
+
+      // Check if the URL starts with 'gs://', convert it to a downloadable URL
+      if (imageUrl.startsWith('gs://')) {
+        imageUrl = await _getDownloadUrl(imageUrl);
+      }
+
+      // Update state with fetched data
+      setState(() {
+        _profileImageUrl = imageUrl;
+        _gender = userSnapshot['gender'];
+      });
+    } catch (e) {
+      print('Error loading profile data: $e');
+      // Handle errors
+    }
+  }
+
+  Future<String> _getDownloadUrl(String gsUrl) async {
+    // Convert the 'gs://' URL to a downloadable URL
+    try {
+      final ref = FirebaseStorage.instance.refFromURL(gsUrl);
+      return await ref.getDownloadURL();
+    } catch (e) {
+      print('Error getting download URL: $e');
+      return gsUrl; // Return the original URL in case of an error
+    }
+  }
+
+  Future<void> _pickAndUploadImage() async {
+    // Implement the same method as in your ProfilePage for picking and uploading images
+    // Placeholder: Implement this method using _picker and Firebase Storage
+  }
+
+  // Other methods...
 
   Widget _profileImage() {
     if (_profileImageUrl != null) {
@@ -153,27 +204,6 @@ class _CheckProfileState extends State<CheckProfile> {
         ),
       ),
     );
-  }
-
-  Future<void> _loadProfileData() async {
-    try {
-      String userId = FirebaseAuth.instance.currentUser!.uid;
-      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .get();
-
-      setState(() {
-        _profileImageUrl = userSnapshot['profileImageUrl'];
-        _gender = userSnapshot['gender'];
-      });
-    } catch (e) {
-      print(e); // Handle errors
-    }
-  }
-
-  Future<void> _pickAndUploadImage() async {
-    // Implement the same method as in your ProfilePage for picking and uploading images
   }
 
   void _showLogoutConfirmationDialog() {
