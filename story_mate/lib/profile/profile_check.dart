@@ -41,7 +41,6 @@ class _CheckProfileState extends State<CheckProfile> {
                 children: [
                   _profileImage(),
                   const SizedBox(height: 20),
-                  _changeProfileImageButton(),
                   const SizedBox(height: 30),
                   _genderSection(),
                   const SizedBox(height: 30),
@@ -101,11 +100,6 @@ class _CheckProfileState extends State<CheckProfile> {
     }
   }
 
-  Future<void> _pickAndUploadImage() async {
-    // Implement the same method as in your ProfilePage for picking and uploading images
-    // Placeholder: Implement this method using _picker and Firebase Storage
-  }
-
   Widget _profileImage() {
     if (_profileImageUrl != null) {
       return ClipOval(
@@ -123,43 +117,20 @@ class _CheckProfileState extends State<CheckProfile> {
     }
   }
 
-  Widget _changeProfileImageButton() {
-    return InkWell(
-      onTap: () => _pickAndUploadImage(),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius: BorderRadius.circular(20),
-        ),
-        padding: const EdgeInsets.all(10),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text(
-              'Change Profile Image ',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _genderSection() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           'Gender:',
           style: Theme.of(context).textTheme.subtitle1,
+          textAlign: TextAlign.center,
         ),
         const SizedBox(height: 10),
         Text(
           _gender ?? 'Loading...',
           style: Theme.of(context).textTheme.bodyText1,
+          textAlign: TextAlign.center,
         ),
       ],
     );
@@ -228,6 +199,7 @@ class _CheckProfileState extends State<CheckProfile> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Colors.white,
           title: Text(_about != null ? 'Edit About' : 'Add About'),
           content: TextField(
             controller: aboutController,
