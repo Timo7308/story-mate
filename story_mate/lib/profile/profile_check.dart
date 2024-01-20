@@ -16,6 +16,7 @@ class _CheckProfileState extends State<CheckProfile> {
   String? _profileImageUrl;
   String? _gender;
   String? _about;
+  String? _username;
   final ImagePicker _picker = ImagePicker();
 
   @override
@@ -41,7 +42,9 @@ class _CheckProfileState extends State<CheckProfile> {
                 children: [
                   _profileImage(),
                   const SizedBox(height: 20),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 10),
+                  _userNameSection(),
+                  const SizedBox(height: 40),
                   _genderSection(),
                   const SizedBox(height: 30),
                   _aboutSection(),
@@ -76,12 +79,14 @@ class _CheckProfileState extends State<CheckProfile> {
 
       // Get 'about' field from Firestore
       String about = userSnapshot['about'] ?? '';
+      String username = userSnapshot['username'] ?? '';
 
       // Update state with fetched data
       setState(() {
         _profileImageUrl = imageUrl;
         _gender = userSnapshot['gender'];
         _about = about;
+        _username = username;
       });
     } catch (e) {
       print('Error loading profile data: $e');
@@ -133,6 +138,14 @@ class _CheckProfileState extends State<CheckProfile> {
           textAlign: TextAlign.center,
         ),
       ],
+    );
+  }
+
+  Widget _userNameSection() {
+    return Text(
+      style: Theme.of(context).textTheme.displayLarge,
+      _username ?? 'Loading...',
+      textAlign: TextAlign.center,
     );
   }
 
