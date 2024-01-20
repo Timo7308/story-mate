@@ -47,9 +47,10 @@ class _StoryChatPageState extends State<StoryChatPage> {
   void _handleSendPressed(types.PartialText text) async {
     final userText = text.text.trim();
     if (userText.isEmpty) return;
+    final dynamicPrompt = 'How old are you chatGPT?';
 
     _sendMessage(userText, widget.loggedInUserId, chatId); // Send user message
-    await _getResponse(userText);
+    await _getResponse(userText,dynamicPrompt);
   }
 
   void _sendMessage(String text, String senderId, String chatId) async {
@@ -69,7 +70,9 @@ class _StoryChatPageState extends State<StoryChatPage> {
   }
 
 
-  Future<void> _getResponse(String userText) async {
+
+
+  Future<void> _getResponse(String userText, String dynamicPrompt) async {
     final apiKey = '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'; // Replace with your actual API key
     final endpoint = 'https://api.openai.com/v1/chat/completions';
 
@@ -82,7 +85,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
       body: jsonEncode({
         'model': 'gpt-3.5-turbo-1106',
         'messages': [
-          {'role': 'system', 'content': 'How old are you chatGPT?'},
+          {'role': 'system', 'content': dynamicPrompt},
           {'role': 'user', 'content': userText},
         ],
         'max_tokens': 150,
@@ -97,6 +100,39 @@ class _StoryChatPageState extends State<StoryChatPage> {
       // Handle error...
     }
   }
+
+
+
+
+
+  // Future<void> _getResponse(String userText) async {
+  //   final apiKey = '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'; // Replace with your actual API key
+  //   final endpoint = 'https://api.openai.com/v1/chat/completions';
+  //
+  //   final response = await http.post(
+  //     Uri.parse(endpoint),
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Authorization': 'Bearer $apiKey',
+  //     },
+  //     body: jsonEncode({
+  //       'model': 'gpt-3.5-turbo-1106',
+  //       'messages': [
+  //         {'role': 'system', 'content': 'How old are you chatGPT?'},
+  //         {'role': 'user', 'content': userText},
+  //       ],
+  //       'max_tokens': 150,
+  //     }),
+  //   );
+  //
+  //   if (response.statusCode == 200) {
+  //     final data = jsonDecode(response.body);
+  //     final aiText = data['choices'][0]['message']['content'].trim();
+  //     _sendMessage(aiText, 'ai-id', chatId); // Send AI response
+  //   } else {
+  //     // Handle error...
+  //   }
+  // }
 
 
 
