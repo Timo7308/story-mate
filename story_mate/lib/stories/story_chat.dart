@@ -81,7 +81,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      final aiText = data['choices'][0]['text'].trim();
+      final aiText = 'This is the chatGPT response: ' + data['choices'][0]['text'].trim();
       _sendMessage(aiText, 'ai-id', chatId); // Send AI response
     } else {
       // Handle error...
