@@ -112,6 +112,7 @@ class _MatchPageState extends State<MatchPage>
     _onlineUsersSubscription = FirebaseFirestore.instance
         .collection('users')
         .where('loginStatus', isEqualTo: 'online')
+        .where('status', isEqualTo: 1)
         .snapshots()
         .listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
       // Handle updates to the online user list
