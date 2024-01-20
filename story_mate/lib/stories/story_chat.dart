@@ -47,7 +47,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
   void _handleSendPressed(types.PartialText text) async {
     final userText = text.text.trim();
     if (userText.isEmpty) return;
-    final dynamicPrompt = 'How old are you chatGPT?';
+    String dynamicPrompt = userText;
 
     _sendMessage(userText, widget.loggedInUserId, chatId); // Send user message
     await _getResponse(userText,dynamicPrompt);
@@ -85,8 +85,8 @@ class _StoryChatPageState extends State<StoryChatPage> {
       body: jsonEncode({
         'model': 'gpt-3.5-turbo-1106',
         'messages': [
-          {'role': 'system', 'content': dynamicPrompt},
-          {'role': 'user', 'content': userText},
+          {'role': 'user', 'content': dynamicPrompt},
+        // {'role': 'user', 'content': userText},
         ],
         'max_tokens': 150,
       }),
