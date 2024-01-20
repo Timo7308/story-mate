@@ -94,6 +94,7 @@ class _MatchPageState extends State<MatchPage>
         .instance
         .collection('users')
         .where('loginStatus', isEqualTo: 'online')
+        .where('status', isEqualTo: 1) // To make sure the user is not assigned to any room
         .limit(1) // Limit to 1 document
         .get();
 
