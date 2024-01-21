@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:story_mate/registration/login.dart';
 
 class CheckProfile extends StatefulWidget {
   const CheckProfile({Key? key}) : super(key: key);
@@ -307,11 +308,28 @@ class _CheckProfileState extends State<CheckProfile> {
     );
   }
 
-  void _logout() {
-    // Implement your logout functionality here
-    // For example, you can use FirebaseAuth.instance.signOut()
+  void _logout() async {
+    try {
+      // Set the user's login status to offline (you need to have a field for loginStatus in your Firestore document)
+      String userId = FirebaseAuth.instance.currentUser!.uid;
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .update({'loginStatus': 'offline'});
+
+      // Sign out the user
+      await FirebaseAuth.instance.signOut();
+
+      // Navigate to the login page
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => LoginPage()), // Replace LoginPage with your actual login page
+      );
+    } catch (e) {
+      print(e); // Handle errors
+    }
   }
 }
+
 
 void main() {
   runApp(MaterialApp(

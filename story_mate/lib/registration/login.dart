@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:story_mate/stories/story_chat.dart';
@@ -30,10 +31,12 @@ class _LoginPageState extends State<LoginPage> {
 
       if (userCredential.user != null) {
         // Successful login
+        await _updateLoginStatus('online'); // Set loginStatus to 'online'
+
         Navigator.pushNamedAndRemoveUntil(
           context,
           '/start', // Assuming you have a named route for StartPage
-          (route) => false, // Remove all previous routes
+              (route) => false, // Remove all previous routes
         );
       }
     } on FirebaseAuthException catch (e) {
@@ -46,6 +49,18 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         _loading = false;
       });
+    }
+  }
+  Future<void> _updateLoginStatus(String status) async {
+    try {
+      String userId = _auth.currentUser!.uid;
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .update({'loginStatus': 'online'}); // Replace 'online' with your desired value
+    } catch (e) {
+      print('Error updating login status: $e');
+      // Handle error
     }
   }
 
