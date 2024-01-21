@@ -152,27 +152,27 @@ class _CheckProfileState extends State<CheckProfile> {
           style: Theme.of(context).textTheme.subtitle1,
         ),
         const SizedBox(height: 10),
-        if (_about != null)
-          Column(
-            children: [
-              TextField(
-                controller: TextEditingController(text: _about),
-                readOnly: true,
-                maxLines: null, // Display multiple lines
-                style: Theme.of(context).textTheme.bodyText1,
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                ),
-              ),
-              const SizedBox(height: 10),
-              _editAboutButton(),
-            ],
+        if (_about != null) ...[
+          TextField(
+            controller: TextEditingController(text: _about),
+            readOnly: true,
+            maxLines: null, // Display multiple lines
+            style: Theme.of(context).textTheme.bodyText1,
+            textAlign: TextAlign.center,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+            ),
           ),
-        if (_about == null) _addAboutButton(),
+          const SizedBox(height: 10),
+          _editAboutButton(),
+        ] else ...[
+          SizedBox(), // Placeholder to ensure proper layout
+          _addAboutButton(),
+        ],
       ],
     );
   }
+
 
   Widget _editAboutButton() {
     return GestureDetector(
