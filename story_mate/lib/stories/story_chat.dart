@@ -4,7 +4,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
-
+import 'package:story_mate/profile/profile_chat_partner.dart';
 
 class StoryChatPage extends StatefulWidget {
   final String loggedInUserId;
@@ -50,7 +50,9 @@ class _StoryChatPageState extends State<StoryChatPage> {
 
     // dynamicPrompt should be changed based on the selected story
 
-    final dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Pirate" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
+    final dynamicPrompt =
+        'Convert this message into a short part (50 words) of the a story which is "Pirate" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' +
+            userText;
 
     // Pirate tale
     // if (){
@@ -74,12 +76,13 @@ class _StoryChatPageState extends State<StoryChatPage> {
     // }
 
     _sendMessage(userText, widget.loggedInUserId, chatId); // Send user message
-    await _getResponse(userText,dynamicPrompt);
+    await _getResponse(userText, dynamicPrompt);
   }
 
   void _sendMessage(String text, String senderId, String chatId) async {
     DatabaseReference ref = FirebaseDatabase.instance.ref('messages');
-    String messageId = ref.push().key ?? 'default-id'; // Generating a unique ID for the message
+    String messageId = ref.push().key ??
+        'default-id'; // Generating a unique ID for the message
 
     await ref.child(messageId).set({
       'chatId': chatId, // Ensure this is correctly set
@@ -93,11 +96,9 @@ class _StoryChatPageState extends State<StoryChatPage> {
     });
   }
 
-
-
-
   Future<void> _getResponse(String userText, String dynamicPrompt) async {
-    final apiKey = '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'; // Replace with your actual API key
+    final apiKey =
+        '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'; // Replace with your actual API key
     final endpoint = 'https://api.openai.com/v1/chat/completions';
 
     final response = await http.post(
@@ -124,10 +125,6 @@ class _StoryChatPageState extends State<StoryChatPage> {
       // Handle error...
     }
   }
-
-
-
-
 
   // Future<void> _getResponse(String userText) async {
   //   final apiKey = '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'; // Replace with your actual API key
@@ -157,8 +154,6 @@ class _StoryChatPageState extends State<StoryChatPage> {
   //     // Handle error...
   //   }
   // }
-
-
 
   // Future<void> _getResponse(String userText) async {
   //   final response = await http.post(
@@ -209,6 +204,13 @@ class _StoryChatPageState extends State<StoryChatPage> {
       padding: const EdgeInsets.only(right: 15),
       icon: const Icon(Icons.account_circle, size: 35),
       onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ProfileChatPartnerScreen(
+                    partnerUserId: '123',
+                  )),
+        );
         // Navigate to profile page...
       },
     );
@@ -227,7 +229,8 @@ class _StoryChatPageState extends State<StoryChatPage> {
             onSendPressed: _handleSendPressed,
             customMessageBuilder: (message, {required int messageWidth}) {
               if (message is types.TextMessage) {
-                return _buildCustomTextMessage(message as types.TextMessage, messageWidth);
+                return _buildCustomTextMessage(
+                    message as types.TextMessage, messageWidth);
               }
               return _buildDefaultMessageContainer(message, messageWidth);
             },
@@ -269,8 +272,8 @@ class _StoryChatPageState extends State<StoryChatPage> {
           ),
           IconButton(
             icon: const Icon(Icons.send, color: Color(0xFF0A2342)),
-            onPressed: () => _handleSendPressed(types.PartialText(text: _textController.value.text)),
-
+            onPressed: () => _handleSendPressed(
+                types.PartialText(text: _textController.value.text)),
           ),
         ],
       ),
@@ -300,7 +303,6 @@ class _StoryChatPageState extends State<StoryChatPage> {
     );
   }
 
-
   Widget _buildDefaultMessageContainer(
       types.CustomMessage message, int messageWidth) {
     // Customize the appearance of other types of messages here
@@ -317,5 +319,4 @@ class _StoryChatPageState extends State<StoryChatPage> {
       ),
     );
   }
-
 }
