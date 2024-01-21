@@ -73,21 +73,12 @@ class _CheckProfileState extends State<CheckProfile> {
       // Get profile image URL from Firestore
       String imageUrl = userSnapshot['profileImageUrl'];
 
-      // Check if the URL starts with 'gs://', convert it to a downloadable URL
-      if (imageUrl.startsWith('gs://')) {
-        imageUrl = await _getDownloadUrl(imageUrl);
-      }
-
-      // Get 'about' field from Firestore
-      String about = userSnapshot['about'] ?? '';
-      String username = userSnapshot['username'] ?? '';
-
-      // Update state with fetched data
+      // Use the fetched image URL
       setState(() {
         _profileImageUrl = imageUrl;
         _gender = userSnapshot['gender'];
-        _about = about;
-        _username = username;
+        _about = userSnapshot['about'];
+        _username = userSnapshot['username'];
       });
     } catch (e) {
       print('Error loading profile data: $e');
@@ -108,6 +99,7 @@ class _CheckProfileState extends State<CheckProfile> {
 
   Widget _profileImage() {
     if (_profileImageUrl != null) {
+      print("Profile Image URL: $_profileImageUrl"); // Add this line
       return ClipOval(
         child: Image.network(
           _profileImageUrl!,
@@ -122,6 +114,7 @@ class _CheckProfileState extends State<CheckProfile> {
       );
     }
   }
+
 
   Widget _genderSection() {
     return Column(
