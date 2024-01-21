@@ -18,6 +18,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   String? _profileImageUrl;
   Gender? _selectedGender;
+  String? _about; // New field to store user's description
   final ImagePicker _picker = ImagePicker();
 
   @override
@@ -45,6 +46,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 30),
                   _genderSegmentedButton(),
                   const SizedBox(height: 20),
+                  _aboutTextField(), // New text field for the user to input about
                 ],
               ),
             ),
@@ -58,7 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 }
 
                 // Set a default value for the about field, you can modify this as needed
-                String about = "-";
+                String about = _about ?? "-";
 
                 // Save the about field to Firebase
                 _saveAboutToFirebase(about);
@@ -72,6 +74,24 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _aboutTextField() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: TextField(
+        onChanged: (value) {
+          setState(() {
+            _about = value;
+          });
+        },
+        maxLines: 5,
+        decoration: InputDecoration(
+          hintText: 'Tell us something about yourself...',
+          border: OutlineInputBorder(),
+        ),
       ),
     );
   }
@@ -150,7 +170,7 @@ class _ProfilePageState extends State<ProfilePage> {
       try {
         String userId = FirebaseAuth.instance.currentUser!.uid;
         final firebaseStorageRef =
-            FirebaseStorage.instance.ref().child('profile_pics/$userId');
+        FirebaseStorage.instance.ref().child('profile_pics/$userId');
         final uploadTask = firebaseStorageRef.putFile(file);
         final taskSnapshot = await uploadTask;
         final imageUrl = await taskSnapshot.ref.getDownloadURL();

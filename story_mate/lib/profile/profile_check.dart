@@ -19,6 +19,7 @@ class _CheckProfileState extends State<CheckProfile> {
   String? _about;
   String? _username;
   final ImagePicker _picker = ImagePicker();
+  final TextEditingController _aboutController = TextEditingController();
 
   @override
   void initState() {
@@ -115,7 +116,6 @@ class _CheckProfileState extends State<CheckProfile> {
     }
   }
 
-
   Widget _genderSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -137,8 +137,8 @@ class _CheckProfileState extends State<CheckProfile> {
 
   Widget _userNameSection() {
     return Text(
-      style: Theme.of(context).textTheme.displayLarge,
       _username ?? 'Loading...',
+      style: Theme.of(context).textTheme.displayLarge,
       textAlign: TextAlign.center,
     );
   }
@@ -155,10 +155,15 @@ class _CheckProfileState extends State<CheckProfile> {
         if (_about != null)
           Column(
             children: [
-              Text(
-                _about!,
+              TextField(
+                controller: TextEditingController(text: _about),
+                readOnly: true,
+                maxLines: null, // Display multiple lines
                 style: Theme.of(context).textTheme.bodyText1,
                 textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                ),
               ),
               const SizedBox(height: 10),
               _editAboutButton(),
@@ -200,7 +205,7 @@ class _CheckProfileState extends State<CheckProfile> {
   }
 
   Future<void> _editAboutSection() async {
-    TextEditingController aboutController = TextEditingController(text: _about);
+    _aboutController.text = _about ?? ''; // Set the initial value in the text field
 
     await showDialog(
       context: context,
@@ -209,7 +214,8 @@ class _CheckProfileState extends State<CheckProfile> {
           backgroundColor: Colors.white,
           title: Text(_about != null ? 'Edit About' : 'Add About'),
           content: TextField(
-            controller: aboutController,
+            controller: _aboutController,
+            maxLines: 5,
             decoration: InputDecoration(labelText: 'About'),
           ),
           actions: [
@@ -221,7 +227,7 @@ class _CheckProfileState extends State<CheckProfile> {
             ),
             TextButton(
               onPressed: () async {
-                String newAbout = aboutController.text.trim();
+                String newAbout = _aboutController.text.trim();
                 Navigator.of(context).pop();
 
                 // Update 'about' field in Firestore
@@ -322,7 +328,6 @@ class _CheckProfileState extends State<CheckProfile> {
     }
   }
 }
-
 
 void main() {
   runApp(MaterialApp(
