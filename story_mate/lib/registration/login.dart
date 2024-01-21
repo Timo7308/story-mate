@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pushNamedAndRemoveUntil(
           context,
           '/start', // Assuming you have a named route for StartPage
-              (route) => false, // Remove all previous routes
+          (route) => false, // Remove all previous routes
         );
       }
     } on FirebaseAuthException catch (e) {
@@ -51,13 +51,13 @@ class _LoginPageState extends State<LoginPage> {
       });
     }
   }
+
   Future<void> _updateLoginStatus(String status) async {
     try {
       String userId = _auth.currentUser!.uid;
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .update({'loginStatus': 'online'}); // Replace 'online' with your desired value
+      await FirebaseFirestore.instance.collection('users').doc(userId).update({
+        'loginStatus': 'online'
+      }); // Replace 'online' with your desired value
     } catch (e) {
       print('Error updating login status: $e');
       // Handle error
@@ -99,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                           labelText: 'Email',
                           border: OutlineInputBorder(),
                         ),
-                        autofocus: true, // Set autofocus to true
+                        //autofocus: true, // Set autofocus to true
                       ),
                       const SizedBox(height: 20),
                       // Password input field

@@ -115,7 +115,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     children: [
                       TextField(
                         controller: _usernameController,
-                        focusNode: _usernameFocus, // Add this line
+                        //focusNode: _usernameFocus, // Add this line
                         decoration: const InputDecoration(
                           labelText: 'Username',
                           border: OutlineInputBorder(),
