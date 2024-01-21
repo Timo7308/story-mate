@@ -6,6 +6,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:story_mate/registration/login.dart';
 
+import '../registration/welcome.dart';
+
 class CheckProfile extends StatefulWidget {
   const CheckProfile({Key? key}) : super(key: key);
 
@@ -306,7 +308,6 @@ class _CheckProfileState extends State<CheckProfile> {
       },
     );
   }
-
   void _logout() async {
     try {
       // Set the user's login status to offline (you need to have a field for loginStatus in your Firestore document)
@@ -319,9 +320,10 @@ class _CheckProfileState extends State<CheckProfile> {
       // Sign out the user
       await FirebaseAuth.instance.signOut();
 
-      // Navigate to the login page
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => LoginPage()), // Replace LoginPage with your actual login page
+      // Navigate to the login page and clear the navigation stack
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => WelcomePage()),
+            (route) => false,
       );
     } catch (e) {
       print(e); // Handle errors
@@ -331,6 +333,6 @@ class _CheckProfileState extends State<CheckProfile> {
 
 void main() {
   runApp(MaterialApp(
-    home: CheckProfile(),
+    home: WelcomePage(),
   ));
 }
