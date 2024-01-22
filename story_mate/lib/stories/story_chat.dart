@@ -64,18 +64,73 @@ class _StoryChatPageState extends State<StoryChatPage> {
     });
   }
 
-  void _handleSendPressed(types.PartialText text) {
+  Future<void> _handleSendPressed(types.PartialText text) async {
     final userText = text.text.trim();
     if (userText.isEmpty) return;
 
     // Add your logic for dynamicPrompt here
-    final dynamicPrompt = 'Convert this message into a short part (50 words) of the story: ' +
-        userText;
 
-    // Use storyTitle to determine the theme and set dynamicPrompt accordingly
+    String dynamicPrompt = '';
+    // dynamicPrompt should be changed based on the selected story
 
+    //final dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Pirate" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
+
+    // Pirate tale
+     if (widget.storyTitle == "A Pirate Tale"){
+       dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Pirate tale" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
+     }
+    // Space Adventure
+     else if(widget.storyTitle == "A Space Adventure"){
+       dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Space Adventure" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
+     }
+    // Medieval Story
+     else if(widget.storyTitle == "A Medieval Story"){
+       dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Medieval Story" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
+     }
+    // Fairy Tale
+     else if(widget.storyTitle == "A Fairy Tale"){
+       dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Fairy Tale" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
+     }
+    // Zombie Apocalypse
+     else if(widget.storyTitle == "A Zombie Apocalypse"){
+       dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Zombie Apocalypse" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
+     }
+    print('Dynamic Prompt: $dynamicPrompt');
 
     _sendMessage(userText, widget.loggedInUserId, widget.chatId);
+    await _getResponse(userText,dynamicPrompt);
+  }
+  Future<void> _getResponse(String userText, String dynamicPrompt) async {
+    final apiKey = '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'; // Replace with your actual API key
+    final endpoint = 'https://api.openai.com/v1/chat/completions';
+
+    // Construct the messages list based on the selected story
+    final messages = [
+      {'role': 'user', 'content': userText},
+      {'role': 'assistant', 'content': dynamicPrompt},
+    ];
+
+
+    final response = await http.post(
+      Uri.parse(endpoint),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $apiKey',
+      },
+      body: jsonEncode({
+        'model': 'gpt-3.5-turbo-1106',
+        'messages': messages,
+        'max_tokens': 150,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final aiText = data['choices'][0]['message']['content'].trim();
+      _sendMessage(aiText, 'ai-id', widget.chatId); // Send AI response
+    } else {
+      // Handle error...
+    }
   }
 
   @override
