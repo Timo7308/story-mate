@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
-import 'package:story_mate/stories/story_chat.dart'; // Import the chat page
+import 'package:story_mate/stories/story_chat.dart';
 
 class MatchPage extends StatefulWidget {
   final String selectedChoiceId;
@@ -19,7 +19,7 @@ class _MatchPageState extends State<MatchPage>
   late Animation<double> _animation;
   late String loggedInUserId = "";
   late String secondUserId = "";
-
+  late String chatId = ""; // New variable to store the chatId
 
   late StreamSubscription<QuerySnapshot<Map<String, dynamic>>>
   _onlineUsersSubscription;
@@ -79,14 +79,16 @@ class _MatchPageState extends State<MatchPage>
       });
       print('Second user ID: $secondUserId');
 
-      // Check if both users are found, then navigate to the chat page
-      if (secondUserId.isNotEmpty) {
-        navigateToChatPage();
-      }
+      // Generate chatId
+      generateChatId();
+
+      // Navigate to the chat page
+      navigateToChatPage();
     } else {
       print('No matching second user found.');
     }
   }
+
 
   Future<DocumentSnapshot?> getRandomOnlineUser() async {
     // Query users based on the criteria
@@ -94,7 +96,7 @@ class _MatchPageState extends State<MatchPage>
         .instance
         .collection('users')
         .where('loginStatus', isEqualTo: 'online')
-        .where('status', isEqualTo: 1) // To make sure the user is not assigned to any room
+        .where('status', isEqualTo: 0) // To make sure the user is not assigned to any room
         .limit(1) // Limit to 1 document
         .get();
 
@@ -112,7 +114,7 @@ class _MatchPageState extends State<MatchPage>
     _onlineUsersSubscription = FirebaseFirestore.instance
         .collection('users')
         .where('loginStatus', isEqualTo: 'online')
-        .where('status', isEqualTo: 1)
+        .where('status', isEqualTo: 0)
         .snapshots()
         .listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
       // Handle updates to the online user list
@@ -139,8 +141,9 @@ class _MatchPageState extends State<MatchPage>
       });
       print('Updated Second user ID: $secondUserId');
 
-      // Check if both users are found, then navigate to the chat page
+      // Check if both users are found, then generate chatId and navigate to the chat page
       if (loggedInUserId.isNotEmpty && secondUserId.isNotEmpty) {
+        generateChatId();
         navigateToChatPage();
       }
     } else {
@@ -152,6 +155,14 @@ class _MatchPageState extends State<MatchPage>
     }
   }
 
+  void generateChatId() {
+    // Generate a chatId based on user IDs
+    List<String> sortedUserIds = [loggedInUserId, secondUserId]..sort();
+    chatId = sortedUserIds.join('_');
+    print('Generated Chat ID: $chatId');
+  }
+
+
   Future<void> navigateToChatPage() async {
     // Navigate to the chat page
     await Future.delayed(Duration(seconds: 3));
@@ -162,6 +173,7 @@ class _MatchPageState extends State<MatchPage>
           // Pass necessary information to the chat page
           loggedInUserId: loggedInUserId,
           secondUserId: secondUserId,
+          chatId: chatId, // Pass the chatId to the chat page
         ),
       ),
     );

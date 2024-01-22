@@ -48,7 +48,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         await FirebaseFirestore.instance.collection('users').doc(userId).set({
           'username': _usernameController.text,
           'email': _emailController.text,
-          'status': 1,
+          'status': 0,
           'loginStatus': 'online',
         });
 
