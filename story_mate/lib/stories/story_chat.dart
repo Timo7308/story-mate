@@ -113,10 +113,10 @@ class _StoryChatPageState extends State<StoryChatPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => ProfileChatPartnerScreen(
-                partnerUserId: '123',
-              )),
+            builder: (context) => ProfileChatPartner(secondUserId: widget.secondUserId),
+          ),
         );
+
       },
     );
   }
