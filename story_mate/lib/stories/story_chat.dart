@@ -10,11 +10,13 @@ class StoryChatPage extends StatefulWidget {
   final String loggedInUserId;
   final String secondUserId;
   final String chatId;
+  final String storyTitle; // Add a variable to store the story title
 
   StoryChatPage({
     required this.loggedInUserId,
     required this.secondUserId,
     required this.chatId,
+    required this.storyTitle,
   });
 
   @override
@@ -49,8 +51,6 @@ class _StoryChatPageState extends State<StoryChatPage> {
     });
   }
 
-
-
   void _sendMessage(String text, String senderId, String chatId) async {
     DatabaseReference chatRef = FirebaseDatabase.instance.ref('chats/$chatId');
     DatabaseReference messagesRef = chatRef.child('messages');
@@ -64,9 +64,6 @@ class _StoryChatPageState extends State<StoryChatPage> {
     });
   }
 
-
-
-
   void _handleSendPressed(types.PartialText text) {
     final userText = text.text.trim();
     if (userText.isEmpty) return;
@@ -75,79 +72,11 @@ class _StoryChatPageState extends State<StoryChatPage> {
     final dynamicPrompt = 'Convert this message into a short part (50 words) of the story: ' +
         userText;
 
-    // Pirate tale
-    // if (){
-    //   final dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Pirate tale" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
-    // }
-    // Space Adventure
-    // else if(){
-    //   final dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Space Adventure" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
-    // }
-    // Medieval Story
-    // else if(){
-    //   final dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Medieval Story" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
-    // }
-    // Fairy Tale
-    // else if(){
-    //   final dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Fairy Tale" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
-    // }
-    // Zombie Apocalypse
-    // else if(){
-    //   final dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Zombie Apocalypse" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
-    // }
+    // Use storyTitle to determine the theme and set dynamicPrompt accordingly
+
 
     _sendMessage(userText, widget.loggedInUserId, widget.chatId);
-    // Call _getResponse function here if needed
   }
-
-
-  // Future<void> _getResponse(String userText) async {
-  //   final apiKey = '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'; // Replace with your actual API key
-  //   final endpoint = 'https://api.openai.com/v1/chat/completions';
-  //
-  //   final response = await http.post(
-  //     Uri.parse(endpoint),
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Authorization': 'Bearer $apiKey',
-  //     },
-  //     body: jsonEncode({
-  //       'model': 'gpt-3.5-turbo-1106',
-  //       'messages': [
-  //         {'role': 'system', 'content': 'How old are you chatGPT?'},
-  //         {'role': 'user', 'content': userText},
-  //       ],
-  //       'max_tokens': 150,
-  //     }),
-  //   );
-  //
-  //   if (response.statusCode == 200) {
-  //     final data = jsonDecode(response.body);
-  //     final aiText = data['choices'][0]['message']['content'].trim();
-  //     _sendMessage(aiText, 'ai-id', chatId); // Send AI response
-  //   } else {
-  //     // Handle error...
-  //   }
-  // }
-
-  // Future<void> _getResponse(String userText) async {
-  //   final response = await http.post(
-  //     Uri.parse('https://api.openai.com/v1/engines/davinci/completions'),
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Authorization': 'Bearer $apiKey',
-  //     },
-  //     body: jsonEncode({'prompt': userText, 'max_tokens': 150}),
-  //   );
-  //
-  //   if (response.statusCode == 200) {
-  //     final data = jsonDecode(response.body);
-  //     final aiText = data['choices'][0]['text'].trim();
-  //     _sendMessage(aiText, 'ai-id', chatId); // Send AI response
-  //   } else {
-  //     // Handle error...
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -158,12 +87,14 @@ class _StoryChatPageState extends State<StoryChatPage> {
   }
 
   AppBar _buildAppBar() {
+    print('Story Title: ${widget.storyTitle}');
     return AppBar(
       leading: _buildBackButton(),
-      title: const Text('Pirate Story'),
+      title: Text(widget.storyTitle),
       actions: [_buildProfileButton()],
     );
   }
+
 
   IconButton _buildBackButton() {
     return IconButton(
@@ -183,10 +114,9 @@ class _StoryChatPageState extends State<StoryChatPage> {
           context,
           MaterialPageRoute(
               builder: (context) => ProfileChatPartnerScreen(
-                    partnerUserId: '123',
-                  )),
+                partnerUserId: '123',
+              )),
         );
-        // Navigate to profile page...
       },
     );
   }
@@ -255,8 +185,8 @@ class _StoryChatPageState extends State<StoryChatPage> {
     );
   }
 
-  Widget _buildCustomTextMessage(types.TextMessage message, int messageWidth) {
-    // Customize the appearance of text messages here
+  Widget _buildCustomTextMessage(
+      types.TextMessage message, int messageWidth) {
     return Container(
       alignment: message.author.id == widget.loggedInUserId
           ? Alignment.centerRight
@@ -280,7 +210,6 @@ class _StoryChatPageState extends State<StoryChatPage> {
 
   Widget _buildDefaultMessageContainer(
       types.CustomMessage message, int messageWidth) {
-    // Customize the appearance of other types of messages here
     return Container(
       padding: EdgeInsets.all(8.0),
       margin: EdgeInsets.all(4.0),

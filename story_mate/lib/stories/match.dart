@@ -6,8 +6,9 @@ import 'package:story_mate/stories/story_chat.dart';
 
 class MatchPage extends StatefulWidget {
   final String selectedChoiceId;
+  final String storyTitle; // Add a variable to store the story title
 
-  MatchPage({required this.selectedChoiceId});
+  MatchPage({required this.selectedChoiceId, required this.storyTitle});
 
   @override
   _MatchPageState createState() => _MatchPageState();
@@ -20,6 +21,7 @@ class _MatchPageState extends State<MatchPage>
   late String loggedInUserId = "";
   late String secondUserId = "";
   late String chatId = ""; // New variable to store the chatId
+ late String selectedChoiceId = "";
 
   late StreamSubscription<QuerySnapshot<Map<String, dynamic>>>
   _onlineUsersSubscription;
@@ -88,7 +90,6 @@ class _MatchPageState extends State<MatchPage>
       print('No matching second user found.');
     }
   }
-
 
   Future<DocumentSnapshot?> getRandomOnlineUser() async {
     // Query users based on the criteria
@@ -162,7 +163,6 @@ class _MatchPageState extends State<MatchPage>
     print('Generated Chat ID: $chatId');
   }
 
-
   Future<void> navigateToChatPage() async {
     // Navigate to the chat page
     await Future.delayed(Duration(seconds: 3));
@@ -174,10 +174,12 @@ class _MatchPageState extends State<MatchPage>
           loggedInUserId: loggedInUserId,
           secondUserId: secondUserId,
           chatId: chatId, // Pass the chatId to the chat page
+          storyTitle: widget.selectedChoiceId, // Pass the selectedChoice as the story title
         ),
       ),
     );
   }
+
 
   @override
   void dispose() {
