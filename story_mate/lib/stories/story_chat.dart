@@ -78,22 +78,27 @@ class _StoryChatPageState extends State<StoryChatPage> {
     // Pirate tale
      if (widget.storyTitle == "A Pirate Tale"){
        dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Pirate tale" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
+       //dynamicPromptForBeginning = '';
      }
     // Space Adventure
      else if(widget.storyTitle == "A Space Adventure"){
        dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Space Adventure" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
+       //dynamicPromptForBeginning = '';
      }
     // Medieval Story
      else if(widget.storyTitle == "A Medieval Story"){
        dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Medieval Story" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
+       //dynamicPromptForBeginning = '';
      }
     // Fairy Tale
      else if(widget.storyTitle == "A Fairy Tale"){
        dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Fairy Tale" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
+       //dynamicPromptForBeginning = '';
      }
     // Zombie Apocalypse
      else if(widget.storyTitle == "A Zombie Apocalypse"){
        dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Zombie Apocalypse" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
+       //dynamicPromptForBeginning = '';
      }
     print('Dynamic Prompt: $dynamicPrompt');
 
@@ -176,6 +181,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
     );
   }
 
+// new chat body scheme including beginning of the stories
   Column _buildChatBody() {
     return Column(
       children: [
@@ -196,9 +202,34 @@ class _StoryChatPageState extends State<StoryChatPage> {
             },
           ),
         ),
+        StoryTextSection(text: 'Beginning of the Stories'),
       ],
     );
   }
+
+  // Column _buildChatBody() {
+  //   return Column(
+  //     children: [
+  //       Expanded(
+  //         child: Chat(
+  //           messages: messages,
+  //           user: types.User(id: widget.loggedInUserId),
+  //           theme: _buildChatTheme(),
+  //           showUserNames: true,
+  //           customBottomWidget: _buildInputField(),
+  //           onSendPressed: _handleSendPressed,
+  //           customMessageBuilder: (message, {required int messageWidth}) {
+  //             if (message is types.TextMessage) {
+  //               return _buildCustomTextMessage(
+  //                   message as types.TextMessage, messageWidth);
+  //             }
+  //             return _buildDefaultMessageContainer(message, messageWidth);
+  //           },
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   DefaultChatTheme _buildChatTheme() {
     return DefaultChatTheme(
@@ -274,6 +305,29 @@ class _StoryChatPageState extends State<StoryChatPage> {
       ),
       child: Text(
         'Unsupported message type',
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+  }
+}
+
+// shows the beginning of the stories
+class StoryTextSection extends StatelessWidget {
+  final String text;
+
+  StoryTextSection({required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      margin: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        color: Colors.green, // You can customize the color
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Text(
+        text,
         style: TextStyle(color: Colors.white),
       ),
     );
