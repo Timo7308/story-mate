@@ -149,19 +149,9 @@ class _StoryChatPageState extends State<StoryChatPage> {
   AppBar _buildAppBar() {
     print('Story Title: ${widget.storyTitle}');
     return AppBar(
-      leading: _buildBackButton(),
+        automaticallyImplyLeading: false,
       title: Text(widget.storyTitle),
       actions: [_buildProfileButton()],
-    );
-  }
-
-
-  IconButton _buildBackButton() {
-    return IconButton(
-      icon: const Icon(Icons.arrow_back_ios_new_outlined),
-      onPressed: () {
-        Navigator.maybePop(context);
-      },
     );
   }
 
@@ -202,7 +192,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
             },
           ),
         ),
-        StoryTextSection(text: 'Beginning of the Stories'),
+       // StoryTextSection(text: 'Beginning of the Stories'),
       ],
     );
   }
