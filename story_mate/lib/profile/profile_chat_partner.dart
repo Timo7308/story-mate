@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -54,8 +55,8 @@ class _ProfileChatPartnerState extends State<ProfileChatPartner> {
 
   Future<void> _loadProfileData() async {
     try {
-      // Get the user ID of the second user
       String userId = widget.secondUserId;
+      // Get the current user's ID
 
       // Fetch user data from Firestore
       DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
@@ -63,16 +64,29 @@ class _ProfileChatPartnerState extends State<ProfileChatPartner> {
           .doc(userId)
           .get();
 
-      // Get profile image URL from Firestore
-      String imageUrl = userSnapshot['profileImageUrl'];
+      // Check if the document exists and contains the "profileImageUrl" field
+      if (userSnapshot.exists && userSnapshot.data() is Map<String, dynamic>) {
+        Map<String, dynamic> userData = userSnapshot.data() as Map<String, dynamic>;
 
-      // Use the fetched image URL
-      setState(() {
-        _profileImageUrl = imageUrl;
-        _gender = userSnapshot['gender'];
-        _about = userSnapshot['about'];
-        _username = userSnapshot['username'];
-      });
+        if (userData.containsKey('profileImageUrl')) {
+          // Get profile image URL from Firestore
+          String imageUrl = userData['profileImageUrl'];
+
+          // Use the fetched image URL
+          setState(() {
+            _profileImageUrl = imageUrl;
+            _gender = userData['gender'];
+            _about = userData['about'];
+            _username = userData['username'];
+          });
+        } else {
+          // Handle the case where the field is missing
+          print('Profile image URL not found in the document.');
+        }
+      } else {
+        // Handle the case where the document is missing or has unexpected data
+        print('Invalid document or data type.');
+      }
     } catch (e) {
       print('Error loading profile data: $e');
       // Handle errors
