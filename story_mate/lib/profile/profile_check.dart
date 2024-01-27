@@ -1,15 +1,10 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:story_mate/registration/login.dart';
-
 import '../registration/welcome.dart';
 
 class CheckProfile extends StatefulWidget {
-  const CheckProfile({Key? key}) : super(key: key);
+  const CheckProfile({super.key});
 
   @override
   _CheckProfileState createState() => _CheckProfileState();
@@ -20,7 +15,6 @@ class _CheckProfileState extends State<CheckProfile> {
   String? _gender;
   String? _about;
   String? _username;
-  final ImagePicker _picker = ImagePicker();
   final TextEditingController _aboutController = TextEditingController();
 
   @override
@@ -42,15 +36,14 @@ class _CheckProfileState extends State<CheckProfile> {
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(20),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center, // Center content
                 children: [
                   _profileImage(),
                   const SizedBox(height: 20),
-                  const SizedBox(height: 10),
                   _userNameSection(),
-                  const SizedBox(height: 40),
-                  _genderSection(),
                   const SizedBox(height: 30),
+                  _genderSection(),
+                  const SizedBox(height: 40),
                   _aboutSection(),
                 ],
               ),
@@ -89,17 +82,6 @@ class _CheckProfileState extends State<CheckProfile> {
     }
   }
 
-  Future<String> _getDownloadUrl(String gsUrl) async {
-    // Convert the 'gs://' URL to a downloadable URL
-    try {
-      final ref = FirebaseStorage.instance.refFromURL(gsUrl);
-      return await ref.getDownloadURL();
-    } catch (e) {
-      print('Error getting download URL: $e');
-      return gsUrl; // Return the original URL in case of an error
-    }
-  }
-
   Widget _profileImage() {
     if (_profileImageUrl != null) {
       print("Profile Image URL: $_profileImageUrl"); // Add this line
@@ -119,92 +101,111 @@ class _CheckProfileState extends State<CheckProfile> {
   }
 
   Widget _genderSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          'Gender:',
-          style: Theme.of(context).textTheme.subtitle1,
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 10),
-        Text(
-          _gender ?? 'Loading...',
-          style: Theme.of(context).textTheme.bodyText1,
-          textAlign: TextAlign.center,
-        ),
-      ],
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.baseline,
+        textBaseline: TextBaseline.alphabetic, // Specify the baseline type
+        children: [
+          Text(
+            'Gender: ',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          SizedBox(width: 10), // Adjust the width as needed for spacing
+          Text(
+            _gender ?? 'Loading...',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ],
+      ),
     );
   }
 
   Widget _userNameSection() {
-    return Text(
-      _username ?? 'Loading...',
-      style: Theme.of(context).textTheme.displayLarge,
-      textAlign: TextAlign.center,
-    );
-  }
-
-  Widget _aboutSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(
-          'About:',
-          style: Theme.of(context).textTheme.subtitle1,
-        ),
-        const SizedBox(height: 10),
-        if (_about != null) ...[
-          TextField(
-            controller: TextEditingController(text: _about),
-            readOnly: true,
-            maxLines: null, // Display multiple lines
-            style: Theme.of(context).textTheme.bodyText1,
-            textAlign: TextAlign.center,
-            decoration: InputDecoration(
-              border: InputBorder.none,
+        const SizedBox(height: 20),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start, // Align text to the top
+          children: [
+            Text(
+              'Username:',
+              style: Theme.of(context).textTheme.titleMedium,
             ),
-          ),
-          const SizedBox(height: 10),
-          _editAboutButton(),
-        ] else ...[
-          SizedBox(), // Placeholder to ensure proper layout
-          _addAboutButton(),
-        ],
+            const SizedBox(width: 10),
+            Transform.translate(
+              offset: const Offset(0, -5), // Adjust the vertical offset as needed
+              child: Text(
+                _username ?? 'Loading...',
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
 
 
+  Widget _aboutSection() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'About:',
+            style: Theme.of(context).textTheme.titleMedium, // Adjust the font size as needed
+          ),
+          const SizedBox(height: 15), // Adjust the height as needed
+          if (_about != null) ...[
+            TextField(
+              controller: TextEditingController(text: _about),
+              readOnly: true,
+              maxLines: null,
+              style: Theme.of(context).textTheme.bodyLarge,
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+              ),
+            ),
+            const SizedBox(height: 15), // Adjust the height as needed
+            _editAboutButton(),
+          ] else ...[
+            const SizedBox(),
+          ],
+        ],
+      ),
+    );
+  }
+
+
+
   Widget _editAboutButton() {
-    return GestureDetector(
-      onTap: () {
-        _editAboutSection();
-      },
-      child: Text(
-        'Edit',
-        style: TextStyle(
-          color: Colors.blue,
-          decoration: TextDecoration.underline,
+    return SizedBox(
+      width: 80, // Adjust the width as needed
+      height: 40, // Adjust the height as needed
+      child: OutlinedButton(
+        onPressed: () {
+          _editAboutSection();
+        },
+        style: OutlinedButton.styleFrom(
+          backgroundColor: Color(0xFF0A2342), // Set the background color
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0), // Adjust the border radius as needed
+          ),
+        ),
+        child: const Text(
+          'Edit',
+          style: TextStyle(
+            color: Colors.white, // Set the text color
+            fontSize: 16, // Adjust the font size as needed
+          ),
         ),
       ),
     );
   }
 
-  Widget _addAboutButton() {
-    return GestureDetector(
-      onTap: () {
-        _editAboutSection();
-      },
-      child: Text(
-        'Add About',
-        style: TextStyle(
-          color: Colors.blue,
-          decoration: TextDecoration.underline,
-        ),
-      ),
-    );
-  }
 
   Future<void> _editAboutSection() async {
     _aboutController.text = _about ?? ''; // Set the initial value in the text field
@@ -218,14 +219,14 @@ class _CheckProfileState extends State<CheckProfile> {
           content: TextField(
             controller: _aboutController,
             maxLines: 5,
-            decoration: InputDecoration(labelText: 'About'),
+            decoration: const InputDecoration(labelText: 'About'),
           ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () async {
@@ -235,7 +236,7 @@ class _CheckProfileState extends State<CheckProfile> {
                 // Update 'about' field in Firestore
                 await _updateAbout(newAbout);
               },
-              child: Text('Save'),
+              child: const Text('Save'),
             ),
           ],
         );
@@ -268,14 +269,22 @@ class _CheckProfileState extends State<CheckProfile> {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
-      child: TextButton.icon(
+      child: ElevatedButton(
         onPressed: () {
           _showLogoutConfirmationDialog();
         },
-        icon: Icon(Icons.logout, color: Colors.red),
-        label: const Text(
-          'Log Out',
-          style: TextStyle(color: Colors.red),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Color(0xFF0A2342),
+          padding: const EdgeInsets.all(16.0),
+          textStyle: const TextStyle(fontSize: 20),
+        ),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.logout, color: Colors.white),
+            SizedBox(width: 10),
+            Text('Log Out', style: TextStyle(color: Colors.white)),
+          ],
         ),
       ),
     );
@@ -287,27 +296,28 @@ class _CheckProfileState extends State<CheckProfile> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.white,
-          title: Text('Logout Confirmation'),
-          content: Text('Do you really want to log out of your account?'),
+          title: const Text('Logout Confirmation'),
+          content: const Text('Do you really want to log out of your account?'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('No'),
+              child: const Text('No'),
             ),
             TextButton(
               onPressed: () {
                 _logout(); // Implement your logout functionality
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('Yes'),
+              child: const Text('Yes'),
             ),
           ],
         );
       },
     );
   }
+
   void _logout() async {
     try {
       // Set the user's login status to offline (you need to have a field for loginStatus in your Firestore document)
@@ -322,7 +332,7 @@ class _CheckProfileState extends State<CheckProfile> {
 
       // Navigate to the login page and clear the navigation stack
       Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => WelcomePage()),
+        MaterialPageRoute(builder: (context) => const WelcomePage()),
             (route) => false,
       );
     } catch (e) {
@@ -332,7 +342,7 @@ class _CheckProfileState extends State<CheckProfile> {
 }
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: WelcomePage(),
   ));
 }
