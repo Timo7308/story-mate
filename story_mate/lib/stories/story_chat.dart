@@ -264,8 +264,10 @@ class _StoryChatPageState extends State<StoryChatPage> {
   AppBar _buildAppBar() {
     print('Story Title: ${widget.storyTitle}');
     return AppBar(
+      automaticallyImplyLeading: false,
       title: Text(widget.storyTitle),
       actions: [
+
         _buildFinishChatButton(),
         _buildProfileButton(),
       ],

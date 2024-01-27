@@ -14,6 +14,7 @@ class StoryFinishedChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Story Ended'),
       ),
       body: Center(
