@@ -40,7 +40,8 @@ class _StoryChatPageState extends State<StoryChatPage> {
       // Add a system message to the beginning of the chat
       final systemMessage = types.SystemMessage(
         id: 'system_message', // You can use a unique identifier for system messages
-        text: "As the sun dipped low on the horizon of the forgotten island's shore, two figures emerged from the shadows. The first, a daring captain, stood tall with a weathered map clutched tightly in hand, its edges worn by the promise of hidden treasures. The second, a mysterious stowaway, watched with curious eyes, drawn by the allure of adventure. Together, they forged an unlikely bond, united by their shared quest for fortune and the call of the sea.",
+        text:
+            "As the sun dipped low on the horizon of the forgotten island's shore, two figures emerged from the shadows. The first, a daring captain, stood tall with a weathered map clutched tightly in hand, its edges worn by the promise of hidden treasures. The second, a mysterious stowaway, watched with curious eyes, drawn by the allure of adventure. Together, they forged an unlikely bond, united by their shared quest for fortune and the call of the sea.",
         createdAt: DateTime.now().millisecondsSinceEpoch,
       );
       messages.insert(0,
@@ -51,7 +52,8 @@ class _StoryChatPageState extends State<StoryChatPage> {
       // Add a system message to the beginning of the chat
       final systemMessage = types.SystemMessage(
         id: 'system_message', // You can use a unique identifier for system messages
-        text: "In the vast expanse of the cosmos, where stars whispered tales of distant galaxies, two souls collided amidst the shimmering void. One, a fearless explorer with stardust in their veins, and the other, a brilliant scientist with dreams as vast as the universe. Their paths converged as they embarked on a journey beyond the reaches of known space, propelled by the promise of discovery and the boundless wonders of the cosmos.",
+        text:
+            "In the vast expanse of the cosmos, where stars whispered tales of distant galaxies, two souls collided amidst the shimmering void. One, a fearless explorer with stardust in their veins, and the other, a brilliant scientist with dreams as vast as the universe. Their paths converged as they embarked on a journey beyond the reaches of known space, propelled by the promise of discovery and the boundless wonders of the cosmos.",
         createdAt: DateTime.now().millisecondsSinceEpoch,
       );
       messages.insert(0,
@@ -62,7 +64,8 @@ class _StoryChatPageState extends State<StoryChatPage> {
       // Add a system message to the beginning of the chat
       final systemMessage = types.SystemMessage(
         id: 'system_message', // You can use a unique identifier for system messages
-        text: "In the heart of a medieval kingdom, where knights roamed and dragons soared, two paths converged in the shadow of an ancient castle. One, a valiant knight with a gleaming sword at their side, and the other, a cunning thief with secrets hidden beneath their cloak. Fate intertwined their destinies as they set forth on a quest fraught with peril and magic, their journey echoing with the legends of old.",
+        text:
+            "In the heart of a medieval kingdom, where knights roamed and dragons soared, two paths converged in the shadow of an ancient castle. One, a valiant knight with a gleaming sword at their side, and the other, a cunning thief with secrets hidden beneath their cloak. Fate intertwined their destinies as they set forth on a quest fraught with peril and magic, their journey echoing with the legends of old.",
         createdAt: DateTime.now().millisecondsSinceEpoch,
       );
       messages.insert(0,
@@ -73,7 +76,8 @@ class _StoryChatPageState extends State<StoryChatPage> {
       // Add a system message to the beginning of the chat
       final systemMessage = types.SystemMessage(
         id: 'system_message', // You can use a unique identifier for system messages
-        text: "In a land where enchanted forests whispered secrets and magic lingered in every breeze, two souls met amidst the glow of fireflies and the twinkle of fairy lights. One, a gentle princess with a heart pure as moonlight, and the other, a mischievous pixie with laughter dancing in their eyes. Together, they embarked on a whimsical journey through realms of wonder and enchantment, guided by the threads of destiny woven by ancient fairy tales.",
+        text:
+            "In a land where enchanted forests whispered secrets and magic lingered in every breeze, two souls met amidst the glow of fireflies and the twinkle of fairy lights. One, a gentle princess with a heart pure as moonlight, and the other, a mischievous pixie with laughter dancing in their eyes. Together, they embarked on a whimsical journey through realms of wonder and enchantment, guided by the threads of destiny woven by ancient fairy tales.",
         createdAt: DateTime.now().millisecondsSinceEpoch,
       );
       messages.insert(0,
@@ -84,7 +88,8 @@ class _StoryChatPageState extends State<StoryChatPage> {
       // Add a system message to the beginning of the chat
       final systemMessage = types.SystemMessage(
         id: 'system_message', // You can use a unique identifier for system messages
-        text: "Amidst the ruins of a once-thriving city, where the stench of decay hung heavy in the air and the sound of shuffling footsteps echoed through deserted streets, two survivors crossed paths. One, a hardened scavenger with eyes as empty as the void, and the other, a brave medic with a flicker of hope in their soul. Together, they navigated the desolate landscape, battling hordes of the undead and clinging to the fragile promise of survival in a world consumed by chaos and fear.",
+        text:
+            "Amidst the ruins of a once-thriving city, where the stench of decay hung heavy in the air and the sound of shuffling footsteps echoed through deserted streets, two survivors crossed paths. One, a hardened scavenger with eyes as empty as the void, and the other, a brave medic with a flicker of hope in their soul. Together, they navigated the desolate landscape, battling hordes of the undead and clinging to the fragile promise of survival in a world consumed by chaos and fear.",
         createdAt: DateTime.now().millisecondsSinceEpoch,
       );
       messages.insert(0,
@@ -92,7 +97,6 @@ class _StoryChatPageState extends State<StoryChatPage> {
       setState(() {}); // Trigger a rebuild after adding the system message
     }
   }
-  
 
   @override
   void didChangeDependencies() {
