@@ -50,7 +50,7 @@ class _StartPageState extends State<StartPage> {
                 showChats = showChats;
               });
             },
-            child: const Text('Your Journeys'),
+            child: const Text('Home'),
           ),
           actions: [
             IconButton(
@@ -98,7 +98,7 @@ class _StartPageState extends State<StartPage> {
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 16.0),
                             child: Text(
-                              'Click the big button below to start your first chat or find out how it works.',
+                              'Click the big button below to start your chat or find out how it works.',
                               style: Theme.of(context).textTheme.bodyLarge,
                               textAlign: TextAlign.center,
                             ),
