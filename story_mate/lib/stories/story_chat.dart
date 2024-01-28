@@ -35,28 +35,28 @@ class _StoryChatPageState extends State<StoryChatPage> {
   void initState() {
     super.initState();
     _listenForMessages();
-    _tellAStoryOnPageLoad(); // call the method when the page loads
+    // _tellAStoryOnPageLoad(); // call the method when the page loads
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _fetchBeginningResponse();
+    //_fetchBeginningResponse();
   }
 
-  Future<void> _fetchBeginningResponse() async {
-    if (aiBeginningText.isEmpty) {
-      // Fetch beginning response only if it hasn't been fetched before
-      aiBeginningText = await _getBeginningResponse(tellAStoryMessage);
-      final systemMessage = types.SystemMessage(
-        id: 'system_message', // You can use a unique identifier for system messages
-        text: aiBeginningText,
-        createdAt: DateTime.now().millisecondsSinceEpoch,
-      );
-      messages.insert(0, systemMessage);
-      setState(() {}); // Trigger a rebuild after fetching
-    }
-  }
+  //Future<void> _fetchBeginningResponse() async {
+  // if (aiBeginningText.isEmpty) {
+  // Fetch beginning response only if it hasn't been fetched before
+  //aiBeginningText = await _getBeginningResponse(tellAStoryMessage);
+  //final systemMessage = types.SystemMessage(
+  //id: 'system_message', // You can use a unique identifier for system messages
+  //text: aiBeginningText,
+  // createdAt: DateTime.now().millisecondsSinceEpoch,
+  //);
+  //messages.insert(0, systemMessage);
+  //setState(() {}); // Trigger a rebuild after fetching
+  //  }
+  //}
 
   // // new method to handle "Tell a story" on page load
   // void _tellAStoryOnPageLoad() async {
@@ -211,7 +211,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
     }
     print('Dynamic Prompt: $dynamicPrompt');
 
-    // _sendMessage(userText, widget.loggedInUserId, widget.chatId);
+    _sendMessage(userText, widget.loggedInUserId, widget.chatId);
     _textController.clear();
     await _getResponse(userText, dynamicPrompt);
   }
@@ -396,15 +396,15 @@ class _StoryChatPageState extends State<StoryChatPage> {
   Column _buildChatBody() {
     return Column(
       children: [
-        if (aiBeginningText
-            .isNotEmpty) // Check if AI beginning text is available
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              // child: StoryTextSection(text: aiBeginningText),
-            ),
-          ),
+        // if (aiBeginningText
+        //    .isNotEmpty) // Check if AI beginning text is available
+        // Align(
+        //  alignment: Alignment.topLeft,
+        // child: Padding(
+        //   padding: const EdgeInsets.all(8.0),
+        // child: StoryTextSection(text: aiBeginningText),
+        // ),
+        // ),
         Expanded(
           child: Chat(
             messages: messages,

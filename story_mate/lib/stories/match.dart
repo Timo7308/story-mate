@@ -22,10 +22,10 @@ class _MatchPageState extends State<MatchPage>
   late String loggedInUserId = "";
   late String secondUserId = "";
   late String chatId = ""; // New variable to store the chatId
- late String selectedChoiceId = "";
+  late String selectedChoiceId = "";
 
   late StreamSubscription<QuerySnapshot<Map<String, dynamic>>>
-  _onlineUsersSubscription;
+      _onlineUsersSubscription;
 
   @override
   void initState() {
@@ -98,7 +98,8 @@ class _MatchPageState extends State<MatchPage>
         .instance
         .collection('users')
         .where('loginStatus', isEqualTo: 'online')
-        .where('status', isEqualTo: 0) // To make sure the user is not assigned to any room
+        .where('status',
+            isEqualTo: 0) // To make sure the user is not assigned to any room
         .limit(1) // Limit to 1 document
         .get();
 
@@ -158,8 +159,8 @@ class _MatchPageState extends State<MatchPage>
   }
 
   // New method to generate chatID to be unique
-  
-  void generateChatId() {
+
+  /*void generateChatId() {
     // Generate a random chatId consisting of 15 numbers
     String chatId = '';
     Random random = Random();
@@ -169,13 +170,14 @@ class _MatchPageState extends State<MatchPage>
     print('Generated Chat ID: $chatId');
     //return chatId;
   }
+  */
 
-  // void generateChatId() {
-  //   // Generate a chatId based on user IDs
-  //   List<String> sortedUserIds = [loggedInUserId, secondUserId]..sort();
-  //   chatId = sortedUserIds.join('_');
-  //   print('Generated Chat ID: $chatId');
-  // }
+  void generateChatId() {
+    // Generate a chatId based on user IDs
+    List<String> sortedUserIds = [loggedInUserId, secondUserId]..sort();
+    chatId = sortedUserIds.join('_');
+    print('Generated Chat ID: $chatId');
+  }
 
   Future<void> navigateToChatPage() async {
     // Navigate to the chat page
@@ -188,12 +190,12 @@ class _MatchPageState extends State<MatchPage>
           loggedInUserId: loggedInUserId,
           secondUserId: secondUserId,
           chatId: chatId, // Pass the chatId to the chat page
-          storyTitle: widget.selectedChoiceId, // Pass the selectedChoice as the story title
+          storyTitle: widget
+              .selectedChoiceId, // Pass the selectedChoice as the story title
         ),
       ),
     );
   }
-
 
   @override
   void dispose() {
