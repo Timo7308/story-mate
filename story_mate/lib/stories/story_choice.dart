@@ -18,7 +18,8 @@ class _ChoicePageState extends State<ChoicePage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushNamedAndRemoveUntil(
+                context, '/start', (route) => false);
           },
         ),
       ),
@@ -80,31 +81,27 @@ class _ChoicePageState extends State<ChoicePage> {
               'You will be assigned to a partner that picked the same story as you',
               textAlign: TextAlign.center,
             ),
-        ElevatedButton(
-          onPressed: () {
-            if (selectedChoice != null) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MatchPage(selectedChoiceId: selectedChoice!,
-                  storyTitle: selectedChoice!),
-                ),
-              );
-            } else {
-              // Handle the case where selectedChoice is null.
-              // You can show an error message, navigate to a default page, etc.
-            }
-          },
-
-
-
-        style: ElevatedButton.styleFrom(
+            ElevatedButton(
+              onPressed: () {
+                if (selectedChoice != null) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MatchPage(
+                          selectedChoiceId: selectedChoice!,
+                          storyTitle: selectedChoice!),
+                    ),
+                  );
+                } else {
+                  // Handle the case where selectedChoice is null.
+                  // You can show an error message, navigate to a default page, etc.
+                }
+              },
+              style: ElevatedButton.styleFrom(
                 primary: selectedChoice != null
                     ? Color(0xFF0A2342)
                     : Color(0xFFF7F7FC),
               ),
-
-
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -130,7 +127,8 @@ class _ChoicePageState extends State<ChoicePage> {
     required String text,
     required IconData icon,
     required VoidCallback onPressed,
-    required String selectedChoice, required bool selected,
+    required String selectedChoice,
+    required bool selected,
   }) {
     Color buttonColor = selected ? Color(0xFF2CA58D) : Color(0xFFF7F7FC);
     Color textColor =
