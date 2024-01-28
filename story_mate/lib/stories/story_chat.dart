@@ -237,35 +237,35 @@ class _StoryChatPageState extends State<StoryChatPage> {
     // Pirate tale
     if (widget.storyTitle == "A Pirate Tale") {
       dynamicPrompt =
-          "Stylize the following message or question to fit into the context of a story which is 'Pirate Tale' themed. Do not repeat the message or question. Do not mention any proper names in the content: " +
+          'Convert this message into a short part (50 words) of the a story which is "Pirate tale" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' +
               userText;
       //dynamicPromptForBeginning = 'What is the result of 1 plus 3?';
     }
     // Space Adventure
     else if (widget.storyTitle == "A Space Adventure") {
       dynamicPrompt =
-          "Stylize the following message or question to fit into the context of a story which is 'Space Adventure' themed. Do not repeat the message or question. Do not mention any proper names in the content: " +
+          'Stylize the following message to fit into the context of a space adventure, keep it first person: ' +
               userText;
       //dynamicPromptForBeginning = '';
     }
     // Medieval Story
     else if (widget.storyTitle == "A Medieval Story") {
       dynamicPrompt =
-          "Stylize the following message or question to fit into the context of a story which is 'Medieval Story' themed. Do not repeat the message or question. Do not mention any proper names in the content: " +
+          'Convert this message into a short part (50 words) of the a story which is "Medieval Story" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' +
               userText;
       //dynamicPromptForBeginning = '';
     }
     // Fairy Tale
     else if (widget.storyTitle == "A Fairy Tale") {
       dynamicPrompt =
-          "Stylize the following message or question to fit into the context of a story which is 'Fairy Tale' themed. Do not repeat the message or question. Do not mention any proper names in the content: " +
+          'Stylize the following message to fit into the context of a fairy tale, keep it first person: ' +
               userText;
       //dynamicPromptForBeginning = '';
     }
     // Zombie Apocalypse
     else if (widget.storyTitle == "A Zombie Apocalypse") {
       dynamicPrompt =
-          "Stylize the following message or question to fit into the context of a story which is 'Zombie Apocalypse' themed. Do not repeat the message or question. Do not mention any proper names in the content: " +
+          'Convert this message into a short part (50 words) of the a story which is "Zombie Apocalypse" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' +
               userText;
       //dynamicPromptForBeginning = '';
     }
@@ -278,7 +278,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
 
   Future<String> _getBeginningResponse(String tellAStoryMessage) async {
     final apiKey =
-        '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'; // Replace with your actual API key
+        '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'; // Replace with your actual API key
     final endpoint = 'https://api.openai.com/v1/chat/completions';
 
     // Construct the messages list based on the selected story
@@ -307,7 +307,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
 
   Future<void> _getResponse(String userText, String dynamicPrompt) async {
     final apiKey =
-        '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'; // Replace with your actual API key
+        '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'; // Replace with your actual API key
     final endpoint = 'https://api.openai.com/v1/chat/completions';
 
     // Construct the messages list based on the selected story
@@ -333,8 +333,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
       final data = jsonDecode(response.body);
       final aiText = data['choices'][0]['message']['content'].trim();
 
-      _sendMessage(
-          aiText, widget.loggedInUserId, widget.chatId); // Send AI response
+      //_sendMessage(aiText, widget.loggedInUserId, widget.chatId); // Send AI response
     } else {
       print('Error of OpenAI API');
       // Handle error...
