@@ -271,14 +271,14 @@ class _StoryChatPageState extends State<StoryChatPage> {
     }
     print('Dynamic Prompt: $dynamicPrompt');
 
-    _sendMessage(userText, widget.loggedInUserId, widget.chatId);
+  //  _sendMessage(userText, widget.loggedInUserId, widget.chatId);
     _textController.clear();
     await _getResponse(userText, dynamicPrompt);
   }
 
   Future<String> _getBeginningResponse(String tellAStoryMessage) async {
     final apiKey =
-        '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'; // Replace with your actual API key
+        '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'; // Replace with your actual API key
     final endpoint = 'https://api.openai.com/v1/chat/completions';
 
     // Construct the messages list based on the selected story
@@ -307,7 +307,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
 
   Future<void> _getResponse(String userText, String dynamicPrompt) async {
     final apiKey =
-        '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'; // Replace with your actual API key
+        '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'; // Replace with your actual API key
     final endpoint = 'https://api.openai.com/v1/chat/completions';
 
     // Construct the messages list based on the selected story
