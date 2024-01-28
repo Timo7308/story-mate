@@ -278,7 +278,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
 
   Future<String> _getBeginningResponse(String tellAStoryMessage) async {
     final apiKey =
-        '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'; // Replace with your actual API key
+        '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'; // Replace with your actual API key
     final endpoint = 'https://api.openai.com/v1/chat/completions';
 
     // Construct the messages list based on the selected story
@@ -307,7 +307,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
 
   Future<void> _getResponse(String userText, String dynamicPrompt) async {
     final apiKey =
-        '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'; // Replace with your actual API key
+        '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'; // Replace with your actual API key
     final endpoint = 'https://api.openai.com/v1/chat/completions';
 
     // Construct the messages list based on the selected story
