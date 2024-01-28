@@ -169,7 +169,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
     // Space Adventure
     else if (widget.storyTitle == "A Space Adventure") {
       dynamicPrompt =
-          'Convert this message into a short part (50 words) of the a story which is "Space Adventure" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' +
+          'Stylize the following message to fit into the context of a space adventure, keep it first person: ' +
               userText;
       //dynamicPromptForBeginning = '';
     }
@@ -196,7 +196,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
     }
     print('Dynamic Prompt: $dynamicPrompt');
 
-    _sendMessage(userText, widget.loggedInUserId, widget.chatId);
+    //_sendMessage(userText, widget.loggedInUserId, widget.chatId);
     _textController.clear();
     await _getResponse(userText, dynamicPrompt);
   }
