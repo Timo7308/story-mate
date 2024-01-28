@@ -276,6 +276,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
       _sendMessage(
           aiText, widget.loggedInUserId, widget.chatId); // Send AI response
     } else {
+      print('Error of OpenAI API');
       // Handle error...
     }
   }
