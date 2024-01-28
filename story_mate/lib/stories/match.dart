@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:story_mate/stories/story_chat.dart';
+import 'dart:math';
 
 class MatchPage extends StatefulWidget {
   final String selectedChoiceId;
@@ -156,12 +157,25 @@ class _MatchPageState extends State<MatchPage>
     }
   }
 
+  // New method to generate chatID to be unique
+  
   void generateChatId() {
-    // Generate a chatId based on user IDs
-    List<String> sortedUserIds = [loggedInUserId, secondUserId]..sort();
-    chatId = sortedUserIds.join('_');
+    // Generate a random chatId consisting of 15 numbers
+    String chatId = '';
+    Random random = Random();
+    for (int i = 0; i < 15; i++) {
+      chatId += random.nextInt(10).toString(); // Generates a random digit between 0 and 9
+    }
     print('Generated Chat ID: $chatId');
+    //return chatId;
   }
+
+  // void generateChatId() {
+  //   // Generate a chatId based on user IDs
+  //   List<String> sortedUserIds = [loggedInUserId, secondUserId]..sort();
+  //   chatId = sortedUserIds.join('_');
+  //   print('Generated Chat ID: $chatId');
+  // }
 
   Future<void> navigateToChatPage() async {
     // Navigate to the chat page
