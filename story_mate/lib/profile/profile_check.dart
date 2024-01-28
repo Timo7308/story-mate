@@ -68,7 +68,8 @@ class _CheckProfileState extends State<CheckProfile> {
 
       // Check if the document exists and contains the "profileImageUrl" field
       if (userSnapshot.exists && userSnapshot.data() is Map<String, dynamic>) {
-        Map<String, dynamic> userData = userSnapshot.data() as Map<String, dynamic>;
+        Map<String, dynamic> userData =
+            userSnapshot.data() as Map<String, dynamic>;
 
         if (userData.containsKey('profileImageUrl')) {
           // Get profile image URL from Firestore
@@ -94,7 +95,6 @@ class _CheckProfileState extends State<CheckProfile> {
       // Handle errors
     }
   }
-
 
   Widget _profileImage() {
     if (_profileImageUrl != null) {
@@ -149,7 +149,8 @@ class _CheckProfileState extends State<CheckProfile> {
             ),
             const SizedBox(width: 10),
             Transform.translate(
-              offset: const Offset(0, -5), // Adjust the vertical offset as needed
+              offset:
+                  const Offset(0, -5), // Adjust the vertical offset as needed
               child: Text(
                 _username ?? 'Loading...',
                 style: Theme.of(context).textTheme.displayLarge,
@@ -161,7 +162,6 @@ class _CheckProfileState extends State<CheckProfile> {
     );
   }
 
-
   Widget _aboutSection() {
     return Align(
       alignment: Alignment.centerLeft,
@@ -170,7 +170,9 @@ class _CheckProfileState extends State<CheckProfile> {
         children: [
           Text(
             'About:',
-            style: Theme.of(context).textTheme.titleMedium, // Adjust the font size as needed
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium, // Adjust the font size as needed
           ),
           const SizedBox(height: 15), // Adjust the height as needed
           if (_about != null) ...[
@@ -193,8 +195,6 @@ class _CheckProfileState extends State<CheckProfile> {
     );
   }
 
-
-
   Widget _editAboutButton() {
     return SizedBox(
       width: 80, // Adjust the width as needed
@@ -206,7 +206,8 @@ class _CheckProfileState extends State<CheckProfile> {
         style: OutlinedButton.styleFrom(
           backgroundColor: Color(0xFF0A2342), // Set the background color
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0), // Adjust the border radius as needed
+            borderRadius: BorderRadius.circular(
+                8.0), // Adjust the border radius as needed
           ),
         ),
         child: const Text(
@@ -220,9 +221,9 @@ class _CheckProfileState extends State<CheckProfile> {
     );
   }
 
-
   Future<void> _editAboutSection() async {
-    _aboutController.text = _about ?? ''; // Set the initial value in the text field
+    _aboutController.text =
+        _about ?? ''; // Set the initial value in the text field
 
     await showDialog(
       context: context,
@@ -280,25 +281,16 @@ class _CheckProfileState extends State<CheckProfile> {
   }
 
   Widget _logoutButton() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      child: ElevatedButton(
-        onPressed: () {
-          _showLogoutConfirmationDialog();
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Color(0xFF0A2342),
-          padding: const EdgeInsets.all(16.0),
-          textStyle: const TextStyle(fontSize: 20),
-        ),
-        child: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.logout, color: Colors.white),
-            SizedBox(width: 10),
-            Text('Log Out', style: TextStyle(color: Colors.white)),
-          ],
+    return TextButton.icon(
+      onPressed: () {
+        _showLogoutConfirmationDialog();
+      },
+      icon: Icon(Icons.logout, color: Colors.red), // Use your preferred icon
+      label: Text(
+        'Log Out',
+        style: TextStyle(
+          color: Colors.red, // Set the text color to red
+          fontSize: 16, // Adjust the font size as needed
         ),
       ),
     );
@@ -347,7 +339,7 @@ class _CheckProfileState extends State<CheckProfile> {
       // Navigate to the login page and clear the navigation stack
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => const WelcomePage()),
-            (route) => false,
+        (route) => false,
       );
     } catch (e) {
       print(e); // Handle errors
