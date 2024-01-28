@@ -58,7 +58,7 @@ class _MatchPageState extends State<MatchPage>
       setState(() {
         loggedInUserId = user.uid;
       });
-      print('Logged-in user ID: $loggedInUserId');
+      //print('Logged-in user ID: $loggedInUserId');
 
       // Fetch the userid for another online user
       await fetchSecondUser();
@@ -66,7 +66,7 @@ class _MatchPageState extends State<MatchPage>
       // Subscribe to online user updates
       subscribeToOnlineUsers();
     } else {
-      print('No user is currently logged in');
+    //  print('No user is currently logged in');
     }
   }
 
@@ -80,7 +80,7 @@ class _MatchPageState extends State<MatchPage>
       setState(() {
         secondUserId = secondUserSnapshot.id;
       });
-      print('Second user ID: $secondUserId');
+      //print('Second user ID: $secondUserId');
 
       // Generate chatId
       generateChatId();
@@ -88,7 +88,7 @@ class _MatchPageState extends State<MatchPage>
       // Navigate to the chat page
       navigateToChatPage();
     } else {
-      print('No matching second user found.');
+   //   print('No matching second user found.');
     }
   }
 
@@ -142,7 +142,7 @@ class _MatchPageState extends State<MatchPage>
       setState(() {
         secondUserId = onlineUsers.first;
       });
-      print('Updated Second user ID: $secondUserId');
+   //   print('Updated Second user ID: $secondUserId');
 
       // Check if both users are found, then generate chatId and navigate to the chat page
       if (loggedInUserId.isNotEmpty && secondUserId.isNotEmpty) {
@@ -154,7 +154,7 @@ class _MatchPageState extends State<MatchPage>
       setState(() {
         secondUserId = '';
       });
-      print('No matching second user found.');
+    //  print('No matching second user found.');
     }
   }
 
@@ -176,7 +176,7 @@ class _MatchPageState extends State<MatchPage>
     // Generate a chatId based on user IDs
     List<String> sortedUserIds = [loggedInUserId, secondUserId]..sort();
     chatId = sortedUserIds.join('_');
-    print('Generated Chat ID: $chatId');
+    //print('Generated Chat ID: $chatId');
   }
 
   Future<void> navigateToChatPage() async {
@@ -231,20 +231,20 @@ class _MatchPageState extends State<MatchPage>
               style: Theme.of(context).textTheme.headline1,
             ),
             const SizedBox(height: 10.0),
-            Text(
-              'Selected Choice ID: ${widget.selectedChoiceId}',
-              style: Theme.of(context).textTheme.headline1,
-            ),
+           // Text(
+           //   'Selected Choice ID: ${widget.selectedChoiceId}',
+           //   style: Theme.of(context).textTheme.headline1,
+          //  ),
             const SizedBox(height: 10.0),
-            Text(
-              'Logged-in User ID: $loggedInUserId',
-              style: Theme.of(context).textTheme.headline1,
-            ),
+         //   Text(
+           //   'Logged-in User ID: $loggedInUserId',
+           //   style: Theme.of(context).textTheme.headline1,
+          //  ),
             const SizedBox(height: 10.0),
-            Text(
-              'Second User ID: $secondUserId',
-              style: Theme.of(context).textTheme.headline1,
-            ),
+          //  Text(
+           //   'Second User ID: $secondUserId',
+           //   style: Theme.of(context).textTheme.headline1,
+          //  ),
             const SizedBox(height: 30.0),
             AnimatedBuilder(
               animation: _animation,
