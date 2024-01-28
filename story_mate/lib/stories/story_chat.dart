@@ -104,6 +104,21 @@ class _StoryChatPageState extends State<StoryChatPage> {
   // }
 
   void _finishChat() {
+    // Clear the local messages list
+    messages.clear();
+
+    // Clear the text input field
+    _textController.clear();
+
+    // Update the state
+    setState(() {});
+
+    // Clear messages in Firebase Realtime Database
+    DatabaseReference chatRef =
+        FirebaseDatabase.instance.ref('chats/${widget.chatId}');
+    DatabaseReference messagesRef = chatRef.child('messages');
+    messagesRef.remove(); // Remove all messages from the current chat
+
     // Close the current chat screen
     Navigator.of(context).pop();
 
@@ -196,7 +211,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
     }
     print('Dynamic Prompt: $dynamicPrompt');
 
-    //_sendMessage(userText, widget.loggedInUserId, widget.chatId);
+    _sendMessage(userText, widget.loggedInUserId, widget.chatId);
     _textController.clear();
     await _getResponse(userText, dynamicPrompt);
   }
