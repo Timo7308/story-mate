@@ -38,6 +38,26 @@ class _StoryChatPageState extends State<StoryChatPage> {
     _tellAStoryOnPageLoad(); // call the method when the page loads
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _fetchBeginningResponse();
+  }
+
+  Future<void> _fetchBeginningResponse() async {
+    if (aiBeginningText.isEmpty) {
+      // Fetch beginning response only if it hasn't been fetched before
+      aiBeginningText = await _getBeginningResponse(tellAStoryMessage);
+      final systemMessage = types.SystemMessage(
+        id: 'system_message', // You can use a unique identifier for system messages
+        text: aiBeginningText,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+      );
+      messages.insert(0, systemMessage);
+      setState(() {}); // Trigger a rebuild after fetching
+    }
+  }
+
   // // new method to handle "Tell a story" on page load
   // void _tellAStoryOnPageLoad() async {
 
@@ -51,32 +71,29 @@ class _StoryChatPageState extends State<StoryChatPage> {
   //   await _getBeginningResponse(tellAStoryMessage); // empty dynamicPrompt
   // }
 
-
   void _tellAStoryOnPageLoad() async {
-
     // Pirate tale
-    if (widget.storyTitle == "A Pirate Tale"){
+    if (widget.storyTitle == "A Pirate Tale") {
       tellAStoryMessage = 'What is a Pirate?';
     }
     // Space Adventure
-    else if(widget.storyTitle == "A Space Adventure"){
+    else if (widget.storyTitle == "A Space Adventure") {
       tellAStoryMessage = 'What is a Space?';
     }
     // Medieval Story
-    else if(widget.storyTitle == "A Medieval Story"){
+    else if (widget.storyTitle == "A Medieval Story") {
       tellAStoryMessage = 'What is a Medieval?';
     }
     // Fairy Tale
-    else if(widget.storyTitle == "A Fairy Tale"){
+    else if (widget.storyTitle == "A Fairy Tale") {
       tellAStoryMessage = 'What is a Fairy?';
     }
     // Zombie Apocalypse
-    else if(widget.storyTitle == "A Zombie Apocalypse"){
+    else if (widget.storyTitle == "A Zombie Apocalypse") {
       tellAStoryMessage = 'What is a Zombie?';
     }
     aiBeginningText = await _getBeginningResponse(tellAStoryMessage);
   }
-
 
   // // new button widget for "Tell a story"
   // IconButton _buildTellAStoryButton() {
@@ -98,11 +115,9 @@ class _StoryChatPageState extends State<StoryChatPage> {
     );
   }
 
-
-
-
   void _listenForMessages() {
-    DatabaseReference chatRef = FirebaseDatabase.instance.ref('chats/${widget.chatId}');
+    DatabaseReference chatRef =
+        FirebaseDatabase.instance.ref('chats/${widget.chatId}');
     DatabaseReference messagesRef = chatRef.child('messages');
 
     messagesRef.onChildAdded.listen((event) {
@@ -145,49 +160,56 @@ class _StoryChatPageState extends State<StoryChatPage> {
     //final dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Pirate" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
 
     // Pirate tale
-    if (widget.storyTitle == "A Pirate Tale"){
-      dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Pirate tale" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
+    if (widget.storyTitle == "A Pirate Tale") {
+      dynamicPrompt =
+          'Convert this message into a short part (50 words) of the a story which is "Pirate tale" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' +
+              userText;
       //dynamicPromptForBeginning = 'What is the result of 1 plus 3?';
     }
     // Space Adventure
-    else if(widget.storyTitle == "A Space Adventure"){
-      dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Space Adventure" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
+    else if (widget.storyTitle == "A Space Adventure") {
+      dynamicPrompt =
+          'Convert this message into a short part (50 words) of the a story which is "Space Adventure" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' +
+              userText;
       //dynamicPromptForBeginning = '';
     }
     // Medieval Story
-    else if(widget.storyTitle == "A Medieval Story"){
-      dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Medieval Story" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
+    else if (widget.storyTitle == "A Medieval Story") {
+      dynamicPrompt =
+          'Convert this message into a short part (50 words) of the a story which is "Medieval Story" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' +
+              userText;
       //dynamicPromptForBeginning = '';
     }
     // Fairy Tale
-    else if(widget.storyTitle == "A Fairy Tale"){
-      dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Fairy Tale" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
+    else if (widget.storyTitle == "A Fairy Tale") {
+      dynamicPrompt =
+          'Stylize the following message to fit into the context of a fairy tale, keep it first person: ' +
+              userText;
       //dynamicPromptForBeginning = '';
     }
     // Zombie Apocalypse
-    else if(widget.storyTitle == "A Zombie Apocalypse"){
-      dynamicPrompt = 'Convert this message into a short part (50 words) of the a story which is "Zombie Apocalypse" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' + userText;
+    else if (widget.storyTitle == "A Zombie Apocalypse") {
+      dynamicPrompt =
+          'Convert this message into a short part (50 words) of the a story which is "Zombie Apocalypse" themed. The purpose of this story is knowing each other. Do not repeat what the I say. Do not mention any proper names in the content. Put the content of the message in the story and If there are any questions, put them into the story in a question format too: ' +
+              userText;
       //dynamicPromptForBeginning = '';
     }
     print('Dynamic Prompt: $dynamicPrompt');
 
     _sendMessage(userText, widget.loggedInUserId, widget.chatId);
-    await _getResponse(userText,dynamicPrompt);
+    _textController.clear();
+    await _getResponse(userText, dynamicPrompt);
   }
 
-
-
-
-
   Future<String> _getBeginningResponse(String tellAStoryMessage) async {
-    final apiKey = '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'; // Replace with your actual API key
+    final apiKey =
+        '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'; // Replace with your actual API key
     final endpoint = 'https://api.openai.com/v1/chat/completions';
 
     // Construct the messages list based on the selected story
     final messages = [
       {'role': 'user', 'content': tellAStoryMessage},
     ];
-
 
     final response = await http.post(
       Uri.parse(endpoint),
@@ -209,7 +231,8 @@ class _StoryChatPageState extends State<StoryChatPage> {
   }
 
   Future<void> _getResponse(String userText, String dynamicPrompt) async {
-    final apiKey = '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'; // Replace with your actual API key
+    final apiKey =
+        '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'; // Replace with your actual API key
     final endpoint = 'https://api.openai.com/v1/chat/completions';
 
     // Construct the messages list based on the selected story
@@ -217,7 +240,6 @@ class _StoryChatPageState extends State<StoryChatPage> {
       {'role': 'user', 'content': userText},
       {'role': 'assistant', 'content': dynamicPrompt},
     ];
-
 
     final response = await http.post(
       Uri.parse(endpoint),
@@ -236,7 +258,8 @@ class _StoryChatPageState extends State<StoryChatPage> {
       final data = jsonDecode(response.body);
       final aiText = data['choices'][0]['message']['content'].trim();
 
-      _sendMessage(aiText, widget.loggedInUserId, widget.chatId); // Send AI response
+      _sendMessage(
+          aiText, widget.loggedInUserId, widget.chatId); // Send AI response
     } else {
       // Handle error...
     }
@@ -267,7 +290,6 @@ class _StoryChatPageState extends State<StoryChatPage> {
       automaticallyImplyLeading: false,
       title: Text(widget.storyTitle),
       actions: [
-
         _buildFinishChatButton(),
         _buildProfileButton(),
       ],
@@ -276,14 +298,12 @@ class _StoryChatPageState extends State<StoryChatPage> {
 
   IconButton _buildFinishChatButton() {
     return IconButton(
-      icon: const Icon(Icons.check),
+      icon: const Icon(Icons.exit_to_app),
       onPressed: () {
         _showFinishChatDialog();
       },
     );
   }
-
-
 
   // IconButton _buildBackButton() {
   //   return IconButton(
@@ -302,22 +322,20 @@ class _StoryChatPageState extends State<StoryChatPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProfileChatPartner(secondUserId: widget.secondUserId),
+            builder: (context) =>
+                ProfileChatPartner(secondUserId: widget.secondUserId),
           ),
         );
-
       },
     );
   }
-
-
-
 
   void _showFinishChatDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Colors.white,
           title: Text('Leaving the story'),
           content: Text('Are you sure you want to leave the story?'),
           actions: [
@@ -349,27 +367,20 @@ class _StoryChatPageState extends State<StoryChatPage> {
 //   Navigator.pushReplacementNamed(context, '/story_choice.dart');
 // }
 
-
-
-
-
-
-
-
-
-
 // new chat body scheme including beginning of the stories
 
   Column _buildChatBody() {
     return Column(
       children: [
-        Align(
-          alignment: Alignment.topLeft,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: StoryTextSection(text: aiBeginningText),
+        if (aiBeginningText
+            .isNotEmpty) // Check if AI beginning text is available
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              // child: StoryTextSection(text: aiBeginningText),
+            ),
           ),
-        ),
         Expanded(
           child: Chat(
             messages: messages,
@@ -382,6 +393,8 @@ class _StoryChatPageState extends State<StoryChatPage> {
               if (message is types.TextMessage) {
                 return _buildCustomTextMessage(
                     message as types.TextMessage, messageWidth);
+              } else if (message is types.SystemMessage) {
+                return _buildSystemMessage(message as types.SystemMessage);
               }
               return _buildDefaultMessageContainer(message, messageWidth);
             },
@@ -390,8 +403,6 @@ class _StoryChatPageState extends State<StoryChatPage> {
       ],
     );
   }
-
-
 
 // Column _buildChatBody() {
 //   return Column(
@@ -423,7 +434,6 @@ class _StoryChatPageState extends State<StoryChatPage> {
 //     ],
 //   );
 // }
-
 
   // Column _buildChatBody() {
   //   return Column(
@@ -489,8 +499,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
     );
   }
 
-  Widget _buildCustomTextMessage(
-      types.TextMessage message, int messageWidth) {
+  Widget _buildCustomTextMessage(types.TextMessage message, int messageWidth) {
     return Container(
       alignment: message.author.id == widget.loggedInUserId
           ? Alignment.centerRight
@@ -509,6 +518,13 @@ class _StoryChatPageState extends State<StoryChatPage> {
           style: TextStyle(color: Colors.white),
         ),
       ),
+    );
+  }
+
+  Widget _buildSystemMessage(types.SystemMessage message) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: StoryTextSection(text: message.text),
     );
   }
 
