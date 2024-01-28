@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:story_mate/profile/profile_chat_partner.dart';
-import 'package:story_mate/stories/story_finished_chat.dart';
+import 'package:story_mate/stories/start.dart';
 
 class StoryChatPage extends StatefulWidget {
   final String loggedInUserId;
@@ -125,7 +125,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
     // Navigate to the "StoryFinishedChatScreen" defined in story_finished_chat.dart
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => StoryFinishedChatScreen(),
+        builder: (context) => StartPage(),
       ),
     );
   }
@@ -211,7 +211,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
     }
     print('Dynamic Prompt: $dynamicPrompt');
 
-    _sendMessage(userText, widget.loggedInUserId, widget.chatId);
+    // _sendMessage(userText, widget.loggedInUserId, widget.chatId);
     _textController.clear();
     await _getResponse(userText, dynamicPrompt);
   }
@@ -283,9 +283,16 @@ class _StoryChatPageState extends State<StoryChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: _buildChatBody(),
+    return WillPopScope(
+      onWillPop: () async {
+        // Handle back button press here
+        _showFinishChatDialog(); // Show your finish chat dialog or handle the back press as needed
+        return false; // Return true if you want to allow back navigation, false otherwise
+      },
+      child: Scaffold(
+        appBar: _buildAppBar(),
+        body: _buildChatBody(),
+      ),
     );
   }
 
@@ -304,9 +311,9 @@ class _StoryChatPageState extends State<StoryChatPage> {
     print('Story Title: ${widget.storyTitle}');
     return AppBar(
       automaticallyImplyLeading: false,
+      leading: _buildFinishChatButton(),
       title: Text(widget.storyTitle),
       actions: [
-        _buildFinishChatButton(),
         _buildProfileButton(),
       ],
     );
@@ -314,7 +321,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
 
   IconButton _buildFinishChatButton() {
     return IconButton(
-      icon: const Icon(Icons.exit_to_app),
+      icon: const Icon(Icons.first_page),
       onPressed: () {
         _showFinishChatDialog();
       },
@@ -352,8 +359,9 @@ class _StoryChatPageState extends State<StoryChatPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.white,
-          title: Text('Leaving the story'),
-          content: Text('Are you sure you want to leave the story?'),
+          title: Text('End this Conversation'),
+          content: Text(
+              'Are you sure you want end this conversation and leave the story? \n\nThis is permanent!'),
           actions: [
             TextButton(
               onPressed: () {

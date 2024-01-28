@@ -47,7 +47,7 @@ class _StartPageState extends State<StartPage> {
           title: InkWell(
             onTap: () {
               setState(() {
-                showChats = !showChats;
+                showChats = showChats;
               });
             },
             child: const Text('Your Journeys'),
