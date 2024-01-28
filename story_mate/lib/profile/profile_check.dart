@@ -71,6 +71,7 @@ class _CheckProfileState extends State<CheckProfile> {
         Map<String, dynamic> userData =
             userSnapshot.data() as Map<String, dynamic>;
 
+        // Check if the profileImageUrl field exists
         if (userData.containsKey('profileImageUrl')) {
           // Get profile image URL from Firestore
           String imageUrl = userData['profileImageUrl'];
@@ -83,6 +84,14 @@ class _CheckProfileState extends State<CheckProfile> {
             _username = userData['username'];
           });
         } else {
+          // If profileImageUrl doesn't exist, set it to null
+          setState(() {
+            _profileImageUrl = null;
+            _gender = userData['gender'];
+            _about = userData['about'];
+            _username = userData['username'];
+          });
+
           // Handle the case where the field is missing
           print('Profile image URL not found in the document.');
         }
@@ -98,7 +107,7 @@ class _CheckProfileState extends State<CheckProfile> {
 
   Widget _profileImage() {
     if (_profileImageUrl != null) {
-      print("Profile Image URL: $_profileImageUrl"); // Add this line
+      print("Profile Image URL: $_profileImageUrl");
       return ClipOval(
         child: Image.network(
           _profileImageUrl!,
@@ -108,8 +117,14 @@ class _CheckProfileState extends State<CheckProfile> {
         ),
       );
     } else {
-      return const ClipOval(
-        child: Icon(Icons.account_circle, size: 150),
+      // Display a default image if profileImageUrl is null
+      return ClipOval(
+        child: Image.asset(
+          'assets/ProfilePictureNone.png',
+          width: 150,
+          height: 150,
+          fit: BoxFit.cover,
+        ),
       );
     }
   }
