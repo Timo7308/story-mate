@@ -271,7 +271,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
     }
     print('Dynamic Prompt: $dynamicPrompt');
 
-  //  _sendMessage(userText, widget.loggedInUserId, widget.chatId);
+    //_sendMessage(userText, widget.loggedInUserId, widget.chatId);
     _textController.clear();
     await _getResponse(userText, dynamicPrompt);
   }
@@ -333,7 +333,8 @@ class _StoryChatPageState extends State<StoryChatPage> {
       final data = jsonDecode(response.body);
       final aiText = data['choices'][0]['message']['content'].trim();
 
-      //_sendMessage(aiText, widget.loggedInUserId, widget.chatId); // Send AI response
+      _sendMessage(
+          aiText, widget.loggedInUserId, widget.chatId); // Send AI response
     } else {
       print('Error of OpenAI API');
       // Handle error...
