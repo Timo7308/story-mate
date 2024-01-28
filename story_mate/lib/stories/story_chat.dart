@@ -35,7 +35,17 @@ class _StoryChatPageState extends State<StoryChatPage> {
   void initState() {
     super.initState();
     _listenForMessages();
-    // _tellAStoryOnPageLoad(); // call the method when the page loads
+
+    // Add a system message to the beginning of the chat
+    final systemMessage = types.SystemMessage(
+      id: 'system_message', // You can use a unique identifier for system messages
+      text:
+          'Hi there welcome to the chat This is a story of 3 idiots and a shitty app that you really dont want to use but you have to because you are a student and you have to do this project. Oh no, i wish i could just go home and watch netflix but i cant because i have to do this project. I hate my life. I wish i was dead. I wish i was never born. I wish i was never conceived. I wish my parents never met. I wish my grandparents never met. I wish my great grandparents never met. I wish my great great grandparents never met. I wish my great great great grandparents never met. I wish my great great great great grandparents never met. I wish my great great great great great grandparents never met. I wish my great great great great great great grandparents never met. I wish my great great great great great great great grandparents never met. I wish my great great great great great great great great grandparents never met. I wish my great great great great great great great great great grandparents never met. I wish my great great great',
+      createdAt: DateTime.now().millisecondsSinceEpoch,
+    );
+    messages.insert(0,
+        systemMessage); // Insert the system message at the beginning of the list
+    setState(() {}); // Trigger a rebuild after adding the system message
   }
 
   @override
