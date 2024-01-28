@@ -163,7 +163,7 @@ class _MatchPageState extends State<MatchPage>
     // Generate a random chatId consisting of 15 numbers
     String chatId = '';
     Random random = Random();
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < 9999999999999; i++) {
       chatId += random.nextInt(10).toString(); // Generates a random digit between 0 and 9
     }
     print('Generated Chat ID: $chatId');
