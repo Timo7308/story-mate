@@ -46,7 +46,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
       );
       messages.insert(0,
           systemMessage); // Insert the system message at the beginning of the list
-      setState(() {}); // Trigger a rebuild after adding the system message
+      //setState(() {}); // Trigger a rebuild after adding the system message
     }
     if (widget.storyTitle == "A Space Adventure") {
       // Add a system message to the beginning of the chat
@@ -58,7 +58,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
       );
       messages.insert(0,
           systemMessage); // Insert the system message at the beginning of the list
-      setState(() {}); // Trigger a rebuild after adding the system message
+      //setState(() {}); // Trigger a rebuild after adding the system message
     }
     if (widget.storyTitle == "A Medieval Story") {
       // Add a system message to the beginning of the chat
@@ -70,7 +70,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
       );
       messages.insert(0,
           systemMessage); // Insert the system message at the beginning of the list
-      setState(() {}); // Trigger a rebuild after adding the system message
+      //setState(() {}); // Trigger a rebuild after adding the system message
     }
     if (widget.storyTitle == "A Fairy Tale") {
       // Add a system message to the beginning of the chat
@@ -82,7 +82,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
       );
       messages.insert(0,
           systemMessage); // Insert the system message at the beginning of the list
-      setState(() {}); // Trigger a rebuild after adding the system message
+      //setState(() {}); // Trigger a rebuild after adding the system message
     }
     if (widget.storyTitle == "A Zombie Apocalypse") {
       // Add a system message to the beginning of the chat
@@ -94,7 +94,7 @@ class _StoryChatPageState extends State<StoryChatPage> {
       );
       messages.insert(0,
           systemMessage); // Insert the system message at the beginning of the list
-      setState(() {}); // Trigger a rebuild after adding the system message
+      //setState(() {}); // Trigger a rebuild after adding the system message
     }
   }
 
