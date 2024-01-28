@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'match.dart'; // Import the MatchPage or replace it with the actual destination page
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'match.dart';
 
 class ChoicePage extends StatefulWidget {
   @override
@@ -31,7 +33,10 @@ class _ChoicePageState extends State<ChoicePage> {
             SizedBox(height: 16.0),
             Text(
               'Choose your story',
-              style: Theme.of(context).textTheme.displayLarge,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .headline5,
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 16.0),
@@ -43,35 +48,30 @@ class _ChoicePageState extends State<ChoicePage> {
                     icon: Icons.flag,
                     onPressed: () => selectChoice('A Pirate Tale'),
                     selected: selectedChoice == 'A Pirate Tale',
-                    selectedChoice: '1',
                   ),
                   buildChoiceButton(
                     text: 'A Space Adventure',
                     icon: Icons.rocket,
                     onPressed: () => selectChoice('A Space Adventure'),
                     selected: selectedChoice == 'A Space Adventure',
-                    selectedChoice: '2',
                   ),
                   buildChoiceButton(
                     text: 'A Medieval Story',
                     icon: Icons.fort,
                     onPressed: () => selectChoice('A Medieval Story'),
                     selected: selectedChoice == 'A Medieval Story',
-                    selectedChoice: '3',
                   ),
                   buildChoiceButton(
                     text: 'A Fairy Tale',
                     icon: Icons.book,
                     onPressed: () => selectChoice('A Fairy Tale'),
                     selected: selectedChoice == 'A Fairy Tale',
-                    selectedChoice: '4',
                   ),
                   buildChoiceButton(
                     text: 'A Zombie Apocalypse',
                     icon: Icons.warning,
                     onPressed: () => selectChoice('A Zombie Apocalypse'),
                     selected: selectedChoice == 'A Zombie Apocalypse',
-                    selectedChoice: '5',
                   ),
                 ],
               ),
@@ -84,12 +84,18 @@ class _ChoicePageState extends State<ChoicePage> {
             ElevatedButton(
               onPressed: () {
                 if (selectedChoice != null) {
+                  // Store the selected choice in Firebase Firestore
+                  storeSelectedChoiceInFirestore(selectedChoice!);
+
+                  // Navigate to the MatchPage
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MatchPage(
-                          selectedChoiceId: selectedChoice!,
-                          storyTitle: selectedChoice!),
+                      builder: (context) =>
+                          MatchPage(
+                            selectedChoiceId: selectedChoice!,
+                            storyTitle: selectedChoice!,
+                          ),
                     ),
                   );
                 } else {
@@ -107,7 +113,7 @@ class _ChoicePageState extends State<ChoicePage> {
                 children: [
                   Icon(Icons.check,
                       color:
-                          selectedChoice != null ? Colors.white : Colors.black),
+                      selectedChoice != null ? Colors.white : Colors.black),
                   SizedBox(width: 8.0),
                   Text('Start',
                       style: TextStyle(
@@ -127,12 +133,11 @@ class _ChoicePageState extends State<ChoicePage> {
     required String text,
     required IconData icon,
     required VoidCallback onPressed,
-    required String selectedChoice,
     required bool selected,
   }) {
     Color buttonColor = selected ? Color(0xFF2CA58D) : Color(0xFFF7F7FC);
     Color textColor =
-        buttonColor == Color(0xFFF7F7FC) ? Colors.black : Colors.white;
+    buttonColor == Color(0xFFF7F7FC) ? Colors.black : Colors.white;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: ElevatedButton(
@@ -165,5 +170,22 @@ class _ChoicePageState extends State<ChoicePage> {
     setState(() {
       selectedChoice = choice;
     });
+  }
+
+  void storeSelectedChoiceInFirestore(String choice) {
+    try {
+      // Replace 'user' with the actual user identifier
+      String userId = FirebaseAuth.instance.currentUser!.uid;
+
+      FirebaseFirestore.instance.collection('users').doc(userId).update({
+        'selectedChoice': choice,
+      }).then((_) {
+        print('Choice updated');
+      }).catchError((error) {
+        print('Error updating selected choice: $error');
+      });
+    } catch (e) {
+      print('Error storing selected choice in Firestore: $e');
+    }
   }
 }
