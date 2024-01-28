@@ -52,27 +52,33 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-            child: ElevatedButton(
-              onPressed: () {
-                if (_selectedGender == null) {
-                  _saveGenderToFirebase('male');
-                }
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              child: ElevatedButton(
+                onPressed: () {
+                  if (_profileImageUrl != null) {
+                    if (_selectedGender == null) {
+                      _saveGenderToFirebase('male');
+                    }
 
-                // Set a default value for the about field, you can modify this as needed
-                String about = _about ?? "-";
+                    // Set a default value for the about field, you can modify this as needed
+                    String about = _about ?? "-";
 
-                // Save the about field to Firebase
-                _saveAboutToFirebase(about);
+                    // Save the about field to Firebase
+                    _saveAboutToFirebase(about);
 
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SetupPage()),
-                );
-              },
-              child: const Text('Finish Setup'),
-            ),
-          ),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SetupPage()),
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: _profileImageUrl != null
+                      ? Color(0xFF0A2342)
+                      : Colors.grey, // Change the color based on the condition
+                ),
+                child: const Text('Finish Setup'),
+              )),
         ],
       ),
     );
@@ -170,7 +176,7 @@ class _ProfilePageState extends State<ProfilePage> {
       try {
         String userId = FirebaseAuth.instance.currentUser!.uid;
         final firebaseStorageRef =
-        FirebaseStorage.instance.ref().child('profile_pics/$userId');
+            FirebaseStorage.instance.ref().child('profile_pics/$userId');
         final uploadTask = firebaseStorageRef.putFile(file);
         final taskSnapshot = await uploadTask;
         final imageUrl = await taskSnapshot.ref.getDownloadURL();
