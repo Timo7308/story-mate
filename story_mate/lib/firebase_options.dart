@@ -44,41 +44,18 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyD7m1TKA1sZ-yiZW7au1JvD3UTZpEejwE8',
-    appId: '1:385510487289:web:f495e508e7cd1558805e28',
-    messagingSenderId: '385510487289',
-    projectId: 'st-mate-3dcc6',
-    authDomain: 'st-mate-3dcc6.firebaseapp.com',
-    databaseURL: 'https://st-mate-3dcc6-default-rtdb.europe-west1.firebasedatabase.app',
-    storageBucket: 'st-mate-3dcc6.appspot.com',
+    
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBcpIdHXRuS2eLo4zmw3i_rhLVpxil78Zk',
-    appId: '1:385510487289:android:c18d9d692e96c6c5805e28',
-    messagingSenderId: '385510487289',
-    projectId: 'st-mate-3dcc6',
-    databaseURL: 'https://st-mate-3dcc6-default-rtdb.europe-west1.firebasedatabase.app',
-    storageBucket: 'st-mate-3dcc6.appspot.com',
+   
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDf8cFSbeqZMvqmfPD17_IUQNjuCV1D6ec',
-    appId: '1:385510487289:ios:0852f404a80d44e2805e28',
-    messagingSenderId: '385510487289',
-    projectId: 'st-mate-3dcc6',
-    databaseURL: 'https://st-mate-3dcc6-default-rtdb.europe-west1.firebasedatabase.app',
-    storageBucket: 'st-mate-3dcc6.appspot.com',
-    iosBundleId: 'com.example.storyMate',
+   
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDf8cFSbeqZMvqmfPD17_IUQNjuCV1D6ec',
-    appId: '1:385510487289:ios:140aab50828b8f4d805e28',
-    messagingSenderId: '385510487289',
-    projectId: 'st-mate-3dcc6',
-    databaseURL: 'https://st-mate-3dcc6-default-rtdb.europe-west1.firebasedatabase.app',
-    storageBucket: 'st-mate-3dcc6.appspot.com',
-    iosBundleId: 'com.example.storyMate.RunnerTests',
+   
   );
 }
